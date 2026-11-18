@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import Flamme from '../components/Flamme.astro';
+import { aktion, gemeinde, links, url, text } from '../data/site.js';
+
+// Optionale Ansprechperson aus content/texte/start.md
+const { kontakt_name, kontakt_telefon, kontakt_email } = text('start').frontmatter;
+const telefonLink = kontakt_telefon ? 'tel:' + String(kontakt_telefon).replace(/[^\d+]/g, '') : '';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const voller = title === aktion ? aktion : `${title} · ${aktion}`;
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{voller}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#6b1e2e" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="kopf">
+      <a class="kopf-link" href={url('/')}>
+        <Flamme groesse={18} />
+        <span>{aktion}</span>
+      </a>
+    </header>
+
+    <slot name="vor-main" />
+
+    <main id="inhalt">
+      <slot />
+    </main>
+
+    <footer class="fuss">
+      <p>{gemeinde}</p>
+      {(kontakt_name || kontakt_telefon || kontakt_email) && (
+        <p class="fuss-kontakt">
+          Ansprechperson{kontakt_name ? `: ${kontakt_name}` : ''}
+          {kontakt_telefon && <><br /><a href={telefonLink}>{kontakt_telefon}</a></>}
+          {kontakt_email && <><br /><a href={`mailto:${kontakt_email}`}>{kontakt_email}</a></>}
+        </p>
+      )}
+      <p class="fuss-links">
+        <a href={links.impressum}>Impressum</a>
+        <span aria-hidden="true">·</span>
+        <a href={links.datenschutz}>Datenschutz</a>
+      </p>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .kopf {
+    background: var(--weinrot);
+    color: var(--creme);
+    padding: 0.6rem var(--rand);
+  }
+
+  .kopf-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: var(--breite);
+    margin: 0 auto;
+    color: var(--creme);
+    text-decoration: none;
+    font-family: var(--schrift-titel);
+    font-size: 1rem;
+    min-height: 2.25rem;
+  }
+
+  .kopf-link:focus-visible { outline-color: var(--gold-hell); }
+
+  .fuss {
+    border-top: 2px solid var(--gold-schmuck);
+    background: var(--creme-dunkel);
+    color: var(--text-leise);
+    font-size: 0.95rem;
+    text-align: center;
+    padding: 1.25rem var(--rand) 1.75rem;
+  }
+
+  .fuss p { margin: 0.25rem 0; }
+
+  .fuss-links {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .fuss a {
+    color: var(--text-leise);
+    display: inline-block;
+    padding: 0.4rem 0.25rem;
+  }
+</style>

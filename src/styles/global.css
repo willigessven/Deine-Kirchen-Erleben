@@ -1,0 +1,134 @@
+/* Farben, Schriften und Abstände für die ganze Website */
+:root {
+  --creme: #fbf6ec;
+  --creme-dunkel: #f3e9d6;
+  --weinrot: #6b1e2e;
+  --weinrot-dunkel: #521522;
+  --text: #2b1d1a;
+  --text-leise: #5c4a44;
+  --gold-text: #8a6216;      /* Gold für Text/Links auf Creme (Kontrast 5:1) */
+  --gold-schmuck: #b8862b;   /* nur für Linien und Schmuck */
+  --gold-hell: #e2b65a;      /* Gold auf Weinrot */
+
+  --schrift-titel: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+  --schrift-text: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --breite: 40rem;
+  --rand: 1.25rem;
+  --radius: 0.75rem;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--creme);
+  color: var(--text);
+  font-family: var(--schrift-text);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--breite);
+  margin: 0 auto;
+  padding: 1.5rem var(--rand) 2.5rem;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--schrift-titel);
+  color: var(--weinrot);
+  line-height: 1.2;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+
+p { margin: 0 0 1rem; }
+
+a {
+  color: var(--weinrot);
+  text-underline-offset: 0.2em;
+}
+
+strong { color: var(--weinrot); }
+
+:focus-visible {
+  outline: 3px solid var(--gold-text);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Goldene Zierlinie */
+.zierlinie {
+  display: block;
+  width: 4rem;
+  height: 2px;
+  background: var(--gold-schmuck);
+  border: 0;
+  margin: 1.25rem 0;
+}
+
+/* Große Buttons */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3.5rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: var(--radius);
+  background: var(--weinrot);
+  color: var(--creme);
+  font-family: var(--schrift-titel);
+  font-size: 1.3rem;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 2px 0 var(--weinrot-dunkel);
+  transition: background 0.15s;
+}
+
+.button:hover { background: var(--weinrot-dunkel); }
+
+.button-leise {
+  background: transparent;
+  color: var(--weinrot);
+  border: 2px solid var(--weinrot);
+  box-shadow: none;
+}
+
+.button-leise:hover { background: var(--creme-dunkel); }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}

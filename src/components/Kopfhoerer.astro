@@ -1,0 +1,24 @@
+---
+// Kopfhörersymbol. Mit "label" wird es für Screenreader angesagt, sonst nur Schmuck.
+interface Props { label?: string; groesse?: number }
+const { label, groesse = 18 } = Astro.props;
+---
+<svg
+  class="kopfhoerer"
+  width={groesse}
+  height={groesse}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  <path d="M4 15v-3a8 8 0 0 1 16 0v3" />
+  <rect x="3" y="14" width="4.5" height="7" rx="1.5" />
+  <rect x="16.5" y="14" width="4.5" height="7" rx="1.5" />
+</svg>

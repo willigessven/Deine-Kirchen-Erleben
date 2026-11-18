@@ -1,0 +1,18 @@
+So kommen Aufnahmen auf die Website
+===================================
+
+1. MP3-Datei in diesen Ordner legen (am besten ca. 128 kbps).
+2. Dateiname mit Nummer vorne, die Nummer bestimmt die Reihenfolge:
+     01-Macht-hoch-die-Tuer.mp3
+     02-Tochter-Zion.mp3
+   Bindestriche werden auf der Website zu Leerzeichen,
+   die Nummer wird nicht angezeigt.
+3. Optional: Eine Textdatei mit genau demselben Namen, nur mit .txt am Ende:
+     01-Macht-hoch-die-Tuer.txt
+   Erste Zeile = Titel, wie er angezeigt werden soll (z. B. "Macht hoch die Tür").
+   Weitere Zeilen = Hinweis, z. B. wer singt oder spielt.
+4. Die Platzhalter-Dateien (mit "PLATZHALTER" im Namen) löschen,
+   sobald echte Aufnahmen da sind.
+
+Ist der Ordner leer, zeigt die Website "Hier erklingt bald Musik".
+Diese Datei (LIESMICH.txt) bitte nicht löschen, sie wird nicht angezeigt.

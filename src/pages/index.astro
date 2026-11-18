@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Flamme from '../components/Flamme.astro';
+import { aktion, gemeinde, kirchen, oeffnungszeiten, text, url } from '../data/site.js';
+
+const { frontmatter, Content } = text('start');
+---
+<BaseLayout
+  title={aktion}
+  description={`${aktion}: Michaelskirche und Pauluskirche, ${oeffnungszeiten.zeitraum}, ${oeffnungszeiten.uhrzeit}. Texte und Musik für deinen Besuch.`}
+>
+  <section class="start">
+    <div class="start-flamme"><Flamme groesse={48} /></div>
+    <h1>{aktion}</h1>
+    <p class="start-gemeinde">{gemeinde}</p>
+    <hr class="zierlinie mitte" />
+
+    <div class="start-text">
+      <Content />
+    </div>
+
+    <p class="weiter-hinweis" hidden>
+      <a class="button" href="#" data-weiter><span>Weiter in der <span data-name></span></span><span aria-hidden="true">→</span></a>
+    </p>
+
+    <h2 class="visually-hidden">Kirche wählen</h2>
+    <ul class="auswahl">
+      {kirchen.map((k) => (
+        <li>
+          <a class="button auswahl-button" href={url(`/${k.slug}/`)} data-kirche={k.slug}>{k.name}</a>
+        </li>
+      ))}
+    </ul>
+
+    <p class="zeiten">
+      <strong>{oeffnungszeiten.zeitraum}</strong><br />
+      {oeffnungszeiten.uhrzeit}
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  // Wer schon eine Kirche gewählt hat, bekommt einen "Weiter"-Knopf.
+  // Über "Kirche wechseln" (?wechseln) wird der Hinweis nicht gezeigt.
+  try {
+    const gemerkt = localStorage.getItem('kirche');
+    const wechseln = new URLSearchParams(location.search).has('wechseln');
+    const ziel = gemerkt && document.querySelector<HTMLAnchorElement>(`.auswahl a[data-kirche="${CSS.escape(gemerkt)}"]`);
+    if (ziel && !wechseln) {
+      const hinweis = document.querySelector<HTMLElement>('.weiter-hinweis');
+      const link = hinweis?.querySelector<HTMLAnchorElement>('[data-weiter]');
+      const name = hinweis?.querySelector('[data-name]');
+      if (hinweis && link && name) {
+        link.href = ziel.href;
+        name.textContent = ziel.textContent;
+        hinweis.hidden = false;
+        document.querySelectorAll('.auswahl-button').forEach((b) => b.classList.add('button-leise'));
+      }
+    }
+  } catch {}
+</script>
+
+<style>
+  .start {
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  .start-flamme { margin-bottom: 0.5rem; }
+
+  h1 { font-size: 2.2rem; }
+
+  .start-gemeinde {
+    color: var(--text-leise);
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .zierlinie.mitte { margin: 1.25rem auto; }
+
+  .start-text { font-size: 1.2rem; }
+
+  .start-text :global(p:last-child) {
+    font-family: var(--schrift-titel);
+    color: var(--weinrot);
+    font-size: 1.35rem;
+    margin-top: 1.5rem;
+  }
+
+  .weiter-hinweis { margin: 1.5rem 0 1rem; }
+
+  .auswahl {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 34rem) {
+    .auswahl { grid-template-columns: 1fr 1fr; }
+  }
+
+  .zeiten {
+    margin-top: 2.5rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--gold-schmuck);
+    color: var(--text-leise);
+  }
+
+  .zeiten strong { font-family: var(--schrift-titel); font-size: 1.2rem; }
+</style>

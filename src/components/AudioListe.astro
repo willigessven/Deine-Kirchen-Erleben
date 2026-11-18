@@ -1,0 +1,101 @@
+---
+import Kopfhoerer from './Kopfhoerer.astro';
+
+interface Props {
+  stuecke: { src: string; titel: string; hinweis: string }[];
+}
+const { stuecke } = Astro.props;
+---
+<section class="audio" aria-labelledby="audio-titel">
+  <h2 id="audio-titel" class="visually-hidden">Zum Anhören</h2>
+
+  {stuecke.length === 0 ? (
+    <p class="audio-leer">Hier erklingt bald Musik. Schau gern später noch einmal vorbei.</p>
+  ) : (
+    <>
+      <p class="audio-tipp">
+        <Kopfhoerer groesse={22} />
+        <span>Am schönsten mit Kopfhörern</span>
+      </p>
+      <ol class="audio-liste">
+        {stuecke.map((s, i) => (
+          <li class="audio-stueck">
+            <p class="audio-titel" id={`stueck-${i}`}>{s.titel}</p>
+            {s.hinweis && <p class="audio-hinweis">{s.hinweis}</p>}
+            <audio controls preload="none" src={s.src} aria-labelledby={`stueck-${i}`}>
+              <a href={s.src}>{s.titel} herunterladen</a>
+            </audio>
+          </li>
+        ))}
+      </ol>
+    </>
+  )}
+</section>
+
+<script>
+  // Immer nur ein Stück gleichzeitig abspielen.
+  document.addEventListener(
+    'play',
+    (e) => {
+      for (const a of document.querySelectorAll('audio')) {
+        if (a !== e.target) a.pause();
+      }
+    },
+    true,
+  );
+</script>
+
+<style>
+  .audio { margin-top: 1.75rem; }
+
+  .audio-tipp {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gold-text);
+    font-weight: 600;
+  }
+
+  .audio-liste {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .audio-stueck {
+    background: #fff;
+    border: 1px solid var(--creme-dunkel);
+    border-left: 4px solid var(--gold-schmuck);
+    border-radius: var(--radius);
+    padding: 1rem;
+  }
+
+  .audio-titel {
+    font-family: var(--schrift-titel);
+    color: var(--weinrot);
+    font-size: 1.2rem;
+    margin: 0 0 0.25rem;
+  }
+
+  .audio-hinweis {
+    color: var(--text-leise);
+    font-size: 0.95rem;
+    margin: 0 0 0.5rem;
+  }
+
+  audio {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .audio-leer {
+    background: var(--creme-dunkel);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    font-style: italic;
+    color: var(--text-leise);
+  }
+</style>

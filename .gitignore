@@ -1,0 +1,14 @@
+# Abhängigkeiten
+node_modules/
+
+# fertige Seite (wird beim Build erzeugt)
+dist/
+
+# Astro-Zwischendateien
+.astro/
+
+# Sonstiges
+.DS_Store
+Thumbs.db
+*.log
+.env

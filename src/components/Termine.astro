@@ -1,0 +1,81 @@
+---
+interface Termin {
+  datum: string;
+  uhrzeit?: string;
+  thema?: string;
+  ort: string;
+  adresse?: string;
+}
+interface Props {
+  termine: Termin[];
+  kircheName: string;
+}
+const { termine = [], kircheName } = Astro.props;
+---
+<ul class="termine">
+  {termine.map((t) => {
+    const hier = t.ort === kircheName;
+    return (
+      <li class:list={['termin', { hier }]}>
+        <p class="termin-datum">
+          {t.datum}
+          {t.uhrzeit && <span>, {t.uhrzeit}</span>}
+        </p>
+        {t.thema && <h2 class="termin-thema">„{t.thema}“</h2>}
+        <p class="termin-ort">
+          {t.ort}
+          {t.adresse && <><br /><span class="termin-adresse">{t.adresse}</span></>}
+        </p>
+        {hier && <p class="termin-marke">Hier in dieser Kirche</p>}
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .termine {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .termin {
+    background: #fff;
+    border: 1px solid var(--creme-dunkel);
+    border-left: 4px solid var(--gold-schmuck);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+  }
+
+  .termin.hier {
+    border: 2px solid var(--weinrot);
+    border-left-width: 6px;
+  }
+
+  .termin p { margin: 0; }
+
+  .termin-datum {
+    color: var(--gold-text);
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .termin-thema {
+    font-size: 1.35rem;
+    margin: 0.25rem 0;
+  }
+
+  .termin-adresse { color: var(--text-leise); }
+
+  .termin-marke {
+    display: inline-block;
+    margin-top: 0.6rem !important;
+    background: var(--weinrot);
+    color: var(--creme);
+    font-size: 0.85rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+  }
+</style>

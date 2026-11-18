@@ -1,0 +1,225 @@
+---
+// Eine Seite pro Kirche und Reiter, z. B. /michaelskirche/klang/.
+// /michaelskirche/ (ohne Reiter) zeigt den ersten Reiter. Auf diese Adresse zeigen die QR-Codes.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AudioListe from '../../components/AudioListe.astro';
+import Termine from '../../components/Termine.astro';
+import Kopfhoerer from '../../components/Kopfhoerer.astro';
+import { kirchen, reiter, text, audioListe, reiterUrl, url, aktion } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return kirchen.flatMap((k) => [
+    { params: { kirche: k.slug, reiter: undefined }, props: { kirche: k, aktiv: reiter[0] } },
+    ...reiter.map((r) => ({ params: { kirche: k.slug, reiter: r.slug }, props: { kirche: k, aktiv: r } })),
+  ]);
+}
+
+const { kirche, aktiv } = Astro.props;
+const { frontmatter, Content } = text(aktiv.slug);
+const index = reiter.findIndex((r) => r.slug === aktiv.slug);
+const naechster = reiter[(index + 1) % reiter.length];
+const stuecke = aktiv.audio ? audioListe(kirche.slug, aktiv.slug) : [];
+const titel = frontmatter.titel || aktiv.name;
+---
+<BaseLayout
+  title={`${titel} – ${kirche.name}`}
+  description={`${aktion} in der ${kirche.name}: ${titel}. ${frontmatter.untertitel ?? ''}`.trim()}
+>
+  <div slot="vor-main" class="kirchenleiste" data-kirche={kirche.slug}>
+    <div class="kirchenleiste-oben">
+      <p class="kirchenname">{kirche.name}</p>
+      <a class="wechseln" href={url('/?wechseln')}>Kirche wechseln</a>
+    </div>
+    <nav class="reiter" aria-label={`Bereiche in der ${kirche.name}`}>
+      <ul>
+        {reiter.map((r) => (
+          <li>
+            <a
+              href={reiterUrl(kirche.slug, r.slug)}
+              aria-current={r.slug === aktiv.slug ? 'page' : undefined}
+            >
+              {r.audio && <Kopfhoerer groesse={16} label="mit Audio" />}
+              <span>{r.name}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+
+  <article>
+    <h1>{titel}</h1>
+    {frontmatter.untertitel && <p class="untertitel">{frontmatter.untertitel}</p>}
+    <hr class="zierlinie" />
+    <div class="text">
+      <Content />
+    </div>
+
+    {frontmatter.segenswort && (
+      <figure class="segenswort">
+        <blockquote>{frontmatter.segenswort}</blockquote>
+        {frontmatter.segenswort_quelle && <figcaption>{frontmatter.segenswort_quelle}</figcaption>}
+      </figure>
+    )}
+
+    {aktiv.slug === 'andachten' && (
+      <Termine termine={frontmatter.termine} kircheName={kirche.name} />
+    )}
+
+    {aktiv.audio && <AudioListe stuecke={stuecke} />}
+  </article>
+
+  <a class="weiter" href={reiterUrl(kirche.slug, naechster.slug)}>
+    <span class="weiter-label">Weiter</span>
+    <span class="weiter-ziel">{naechster.name} <span aria-hidden="true">→</span></span>
+  </a>
+</BaseLayout>
+
+<script>
+  // Gewählte Kirche merken und aktiven Reiter in der Leiste sichtbar machen.
+  const leiste = document.querySelector<HTMLElement>('.kirchenleiste');
+  try {
+    if (leiste?.dataset.kirche) localStorage.setItem('kirche', leiste.dataset.kirche);
+  } catch {}
+  const aktivLink = document.querySelector<HTMLElement>('.reiter [aria-current="page"]');
+  const liste = document.querySelector<HTMLElement>('.reiter ul');
+  if (aktivLink && liste) {
+    liste.scrollLeft = aktivLink.offsetLeft - (liste.clientWidth - aktivLink.offsetWidth) / 2;
+  }
+</script>
+
+<style>
+  .kirchenleiste {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--weinrot);
+    color: var(--creme);
+    box-shadow: 0 2px 6px rgb(0 0 0 / 0.15);
+  }
+
+  .kirchenleiste-oben {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: var(--breite);
+    margin: 0 auto;
+    padding: 0.25rem var(--rand) 0;
+    border-top: 1px solid rgb(251 246 236 / 0.2);
+  }
+
+  .kirchenname {
+    font-family: var(--schrift-titel);
+    font-size: 1.35rem;
+    margin: 0;
+  }
+
+  .wechseln {
+    color: var(--gold-hell);
+    font-size: 0.95rem;
+    padding: 0.6rem 0;
+    white-space: nowrap;
+  }
+
+  .wechseln:focus-visible,
+  .reiter a:focus-visible {
+    outline-color: var(--gold-hell);
+  }
+
+  .reiter ul {
+    list-style: none;
+    display: flex;
+    gap: 0.35rem;
+    margin: 0 auto;
+    padding: 0.35rem var(--rand) 0.6rem;
+    max-width: var(--breite);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-hell) transparent;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .reiter li { flex: 0 0 auto; }
+
+  .reiter a {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.75rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgb(251 246 236 / 0.35);
+    color: var(--creme);
+    text-decoration: none;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  .reiter a:hover { background: rgb(251 246 236 / 0.12); }
+
+  .reiter a[aria-current='page'] {
+    background: var(--gold-hell);
+    border-color: var(--gold-hell);
+    color: var(--weinrot-dunkel);
+    font-weight: 600;
+  }
+
+  .untertitel {
+    color: var(--text-leise);
+    font-style: italic;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  .text :global(p) { margin-bottom: 1rem; }
+
+  .segenswort {
+    margin: 1.75rem 0 0;
+    padding: 1.5rem 1.25rem;
+    background: var(--weinrot);
+    color: var(--creme);
+    border-radius: var(--radius);
+    text-align: center;
+  }
+
+  .segenswort blockquote {
+    margin: 0;
+    font-family: var(--schrift-titel);
+    font-size: 1.3rem;
+    line-height: 1.45;
+    white-space: pre-line;
+  }
+
+  .segenswort figcaption {
+    margin-top: 0.75rem;
+    color: var(--gold-hell);
+    font-size: 0.95rem;
+  }
+
+  .weiter {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.5rem;
+    padding: 1rem 1.25rem;
+    border: 2px solid var(--weinrot);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--weinrot);
+  }
+
+  .weiter:hover { background: var(--creme-dunkel); }
+
+  .weiter-label {
+    font-size: 0.85rem;
+    color: var(--text-leise);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .weiter-ziel {
+    font-family: var(--schrift-titel);
+    font-size: 1.3rem;
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+// Wird angezeigt, wenn eine Adresse nicht existiert (z. B. QR-Code falsch abgetippt).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { kirchen, url } from '../data/site.js';
+---
+<BaseLayout title="Seite nicht gefunden" description="Diese Seite gibt es leider nicht.">
+  <h1>Diese Seite gibt es leider nicht</h1>
+  <p>Vielleicht hat sich ein Tippfehler eingeschlichen. Wähle einfach deine Kirche:</p>
+  <ul class="auswahl">
+    {kirchen.map((k) => (
+      <li><a class="button" href={url(`/${k.slug}/`)}>{k.name}</a></li>
+    ))}
+  </ul>
+  <p><a href={url('/')}>Zur Startseite</a></p>
+</BaseLayout>
+
+<style>
+  .auswahl {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+    display: grid;
+    gap: 1rem;
+  }
+</style>
