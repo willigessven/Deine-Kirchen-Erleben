@@ -81,7 +81,7 @@ Lokal auf dem Computer geht es mit `npm run build`.
 
 ## Adressen für die QR-Codes
 
-- Michaelskirche: `https://PLATZHALTER-DOMAIN.de/michaelskirche/`
-- Pauluskirche: `https://PLATZHALTER-DOMAIN.de/pauluskirche/`
+- Michaelskirche: `https://deine-kirchen-erleben.netlify.app/michaelskirche/`
+- Pauluskirche: `https://deine-kirchen-erleben.netlify.app/pauluskirche/`
 
 Diese Adressen dürfen sich nicht mehr ändern, sobald die QR-Codes gedruckt sind.

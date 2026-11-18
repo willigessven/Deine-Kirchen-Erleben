@@ -3,8 +3,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  // Später durch die echte Adresse ersetzen.
-  site: 'https://PLATZHALTER-DOMAIN.de',
+  site: 'https://deine-kirchen-erleben.netlify.app',
   // Alle Adressen enden mit "/" (z. B. /michaelskirche/klang/). Nicht ändern: steht auf den QR-Codes.
   trailingSlash: 'always',
   build: {

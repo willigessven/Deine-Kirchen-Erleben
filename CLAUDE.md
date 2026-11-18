@@ -40,7 +40,8 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 - Handy-Test im WLAN: `npm run dev:handy`.
 
 ## Offen
-- Echte Adresse (`*.netlify.app` oder eigene Domain) in `astro.config.mjs` und `src/data/site.js`
-  (Impressum/Datenschutz) eintragen, bevor QR-Codes gedruckt werden.
+- Live-Adresse: https://deine-kirchen-erleben.netlify.app (in `astro.config.mjs`). QR-Codes zeigen auf
+  `/michaelskirche/` und `/pauluskirche/` dieser Adresse.
+- Impressum/Datenschutz-Links in `src/data/site.js` sind noch Platzhalter.
 - Optionale Felder: Segenswort (`segen.md`), Ansprechperson (`start.md`).
 - Echte MP3s einspielen, Textentwürfe abstimmen, QR-Codes erzeugen.
