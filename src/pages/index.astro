@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Flamme from '../components/Flamme.astro';
 import { aktion, gemeinde, kirchen, oeffnungszeiten, text, url } from '../data/site.js';
 
 const { frontmatter, Content } = text('start');
@@ -10,7 +9,6 @@ const { frontmatter, Content } = text('start');
   description={`${aktion}: Michaelskirche und Pauluskirche, ${oeffnungszeiten.zeitraum}, ${oeffnungszeiten.uhrzeit}. Texte und Musik für deinen Besuch.`}
 >
   <section class="start">
-    <div class="start-flamme"><Flamme groesse={48} /></div>
     <h1>{aktion}</h1>
     <p class="start-gemeinde">{gemeinde}</p>
     <hr class="zierlinie mitte" />
@@ -66,7 +64,6 @@ const { frontmatter, Content } = text('start');
     padding-top: 1rem;
   }
 
-  .start-flamme { margin-bottom: 0.5rem; }
 
   h1 { font-size: 2.2rem; }
 
