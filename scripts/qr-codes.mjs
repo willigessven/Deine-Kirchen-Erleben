@@ -58,14 +58,10 @@ async function code(url, datei) {
   return svg;
 }
 
-const flamme =
-  '<svg class="flamme" viewBox="0 0 40 60" aria-hidden="true"><path d="M20 2 C28 16 34 24 34 36 A14 14 0 0 1 6 36 C6 26 13 20 20 2 Z" fill="#e2b65a"/><path d="M20 22 C24 30 27 34 27 40 A7 7 0 0 1 13 40 C13 34 16 30 20 22 Z" fill="#fbf6ec" opacity=".85"/><rect x="18.5" y="50" width="3" height="10" rx="1.5" fill="#6b1e2e"/></svg>';
-
 function blatt({ ueber, titel, unter, svg, hinweis, url }) {
   const qr = svg.replace('<svg ', `<svg class="qr" role="img" aria-label="QR-Code: ${esc(titel)}" `);
   return `
   <section class="blatt">
-    ${flamme}
     <p class="aktion">${esc(ueber)}</p>
     <h1>${esc(titel)}</h1>
     ${unter ? `<p class="unter">${esc(unter)}</p>` : ''}
@@ -94,8 +90,7 @@ function dokument(titel, blaetter) {
     text-align: center; padding: 18mm; break-after: page; page-break-after: always;
     border: 3mm solid #6b1e2e;
   }
-  .flamme { width: 14mm; }
-  .aktion { font-size: 13pt; color: #6b1e2e; margin: 4mm 0 0; letter-spacing: .05em; text-transform: uppercase; }
+  .aktion { font-size: 13pt; color: #6b1e2e; margin: 0; letter-spacing: .05em; text-transform: uppercase; }
   h1 { font-size: 36pt; color: #6b1e2e; margin: 2mm 0 2mm; font-weight: 600; line-height: 1.15; }
   .unter { font-style: italic; font-size: 15pt; color: #5c4a44; margin: 0 0 2mm; }
   .linie { width: 30mm; height: .7mm; background: #b8862b; margin: 4mm auto 7mm; }
@@ -184,11 +179,10 @@ const tafeln = [
   { seite: 3, reiter: 'segen', mitteVonOben: 247.5 },
 ];
 if (fs.existsSync(vorlage)) {
-  const { PDFDocument, StandardFonts, rgb } = await import('pdf-lib');
+  const { PDFDocument } = await import('pdf-lib');
   console.log('Infotafeln:');
   for (const k of kirchen) {
     const doc = await PDFDocument.load(fs.readFileSync(vorlage));
-    const schrift = await doc.embedFont(StandardFonts.Helvetica);
     for (const t of tafeln) {
       const url = `${BASIS}/${k.slug}/${t.reiter}/`;
       const png = await QRCode.toBuffer(url, { ...qrOpts, margin: 1, width: 1000 });
@@ -197,13 +191,10 @@ if (fs.existsSync(vorlage)) {
       if (!res || res.data !== url) throw new Error(`QR-Code fehlerhaft: Infotafel ${k.slug} ${t.reiter}`);
       const seite = doc.getPage(t.seite - 1);
       const box = seite.getMediaBox();
-      const groesse = 140; // pt, etwa 49 mm
+      const groesse = 150; // pt, etwa 53 mm
       const mitteX = box.x + box.width / 2;
-      const mitteY = box.y + box.height - t.mitteVonOben + 6; // etwas höher, Platz für den Kirchennamen
+      const mitteY = box.y + box.height - t.mitteVonOben;
       seite.drawImage(await doc.embedPng(png), { x: mitteX - groesse / 2, y: mitteY - groesse / 2, width: groesse, height: groesse });
-      const name = k.name;
-      const breite = schrift.widthOfTextAtSize(name, 9);
-      seite.drawText(name, { x: mitteX - breite / 2, y: mitteY - groesse / 2 - 12, size: 9, font: schrift, color: rgb(0.42, 0.12, 0.18) });
       console.log('  OK', url);
     }
     const datei = path.join(ZIEL, `infotafeln-${k.slug}.pdf`);
