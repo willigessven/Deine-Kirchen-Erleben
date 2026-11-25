@@ -8,12 +8,18 @@
     "dev:handy": "astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "qr": "node scripts/qr-codes.mjs"
   },
   "dependencies": {
     "astro": "^7.4.12"
   },
   "engines": {
     "node": ">=22.23.4"
+  },
+  "devDependencies": {
+    "jsqr": "^1.4.0",
+    "pngjs": "^7.0.0",
+    "qrcode": "^1.5.4"
   }
 }

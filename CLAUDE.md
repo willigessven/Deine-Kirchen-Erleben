@@ -44,4 +44,6 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
   `/michaelskirche/` und `/pauluskirche/` dieser Adresse.
 - Impressum/Datenschutz-Links in `src/data/site.js` sind noch Platzhalter.
 - Optionale Felder: Segenswort (`segen.md`), Ansprechperson (`start.md`).
-- Echte MP3s einspielen, Textentwürfe abstimmen, QR-Codes erzeugen.
+- Echte MP3s einspielen, Textentwürfe abstimmen.
+
+
