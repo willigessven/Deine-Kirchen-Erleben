@@ -16,8 +16,10 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 ## Aufbau
 - `src/data/site.js`: Kirchen, Reiter, Links, Laden von Texten (`content/texte/*.md`) und Audio
   (`content/audio/<kirche>/<reiter>/*.mp3` + optionale gleichnamige `.txt`) und Fotos
-  (`content/bilder/<kirche>/<reiter>/`, erstes Foto je Ordner, gleichnamige `.txt` = Alternativtext;
+  (`content/bilder/<kirche>/<reiter>/`, erstes Foto oben, weitere als Galerie unten, gleichnamige `.txt` = Alternativtext;
   Ausgabe über `astro:assets` als WebP 360/720 px). Nur eigene Innenaufnahmen verwenden.
+- `content/gedankenreisen/<kirche>/*.md` (+ gleichnamiges Foto): Gedankenreisen zum Aufklappen auf `kirche-fuer-dich`,
+  je Kirche eigene Texte (Komponente `Gedankenreisen.astro`).
 - `src/pages/index.astro`: Startseite mit Kirchenauswahl.
 - `src/pages/[kirche]/[...reiter].astro`: alle Kirchenseiten. `/michaelskirche/` zeigt den ersten Reiter.
 - `src/layouts/BaseLayout.astro`, `src/components/*`.
@@ -51,4 +53,6 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 ## QR-Codes
 - `npm run qr` (`scripts/qr-codes.mjs`) erzeugt alle Codes (beide Kirchen + je 6 Reiter) als SVG/PNG,
   prüft sie per Decoder und erstellt A4-PDFs in `qr-codes/` (PDF über Microsoft Edge).
+- Außerdem setzt es die Codes in den Infotafel-Entwurf `qr-codes/vorlagen/infotafeln-entwurf.pdf` ein
+  (Seite 1 klang, 2 kirche-fuer-dich, 3 segen; Seite 4 ohne Code) → `qr-codes/infotafeln-<kirche>.pdf` (pdf-lib).
 

@@ -37,6 +37,20 @@ Hier steht der Text. Eine Leerzeile beginnt einen neuen Absatz.
 - **Segenswort** (`segen.md`): Bei `segenswort:` zwischen die Anführungszeichen ein Segenswort aus der Gemeinde schreiben, bei `segenswort_quelle:` optional, von wem es stammt. Es erscheint dann hervorgehoben auf „Segen spüren“. Leer lassen = wird nicht angezeigt.
 - **Ansprechperson** (`start.md`): `kontakt_name`, `kontakt_telefon`, `kontakt_email` ausfüllen, dann steht die Ansprechperson unten auf jeder Seite. Leer lassen = wird nicht angezeigt.
 
+## Gedankenreisen (je Kirche eigene Texte)
+
+Die Gedankenreisen stehen auf „Kirche für dich“, für jede Kirche eigene:
+
+```
+content/gedankenreisen/michaelskirche/
+content/gedankenreisen/pauluskirche/
+```
+
+- Eine Datei pro Gedankenreise, z. B. `01-elisabeth.md`. Die Nummer bestimmt die Reihenfolge.
+- Oben zwischen den `---` stehen `titel:` und `bildbeschreibung:` (Beschreibung des Fotos für Menschen, die nicht sehen können).
+- Optional ein Foto mit gleichem Namen, z. B. `01-elisabeth.jpg`.
+- Auf der Website ist jede Gedankenreise zum Aufklappen. Die gesprochenen Aufnahmen (MP3) kommen wie gewohnt in `content/audio/<kirche>/kirche-fuer-dich/`.
+
 ## Musik und Aufnahmen hinzufügen
 
 ```
@@ -71,7 +85,7 @@ content/bilder/michaelskirche/licht/   → Dein Licht im Advent (Michaelskirche)
 content/bilder/pauluskirche/segen/     → Segen spüren (Pauluskirche)
 ```
 
-1. Foto (`.jpg`, `.png` oder `.webp`) in den passenden Ordner legen, Name mit Nummer vorne, z. B. `01-altar.jpg`. Gezeigt wird immer das **erste** Foto im Ordner.
+1. Foto (`.jpg`, `.png` oder `.webp`) in den passenden Ordner legen, Name mit Nummer vorne, z. B. `01-altar.jpg`. Das **erste** Foto steht groß oben, alle weiteren (`02-…`, `03-…`) erscheinen unten auf der Seite.
 2. Eine Textdatei mit gleichem Namen anlegen (`01-altar.txt`) und darin in einem Satz beschreiben, was auf dem Foto zu sehen ist. Das wird nicht angezeigt, aber für blinde Menschen vorgelesen.
 3. Die Website verkleinert die Fotos beim Bauen automatisch, du musst sie nicht vorher verkleinern. Bitte nur eigene Fotos verwenden oder solche, für die die Gemeinde die Rechte hat.
 

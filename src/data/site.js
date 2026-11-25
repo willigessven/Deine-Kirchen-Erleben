@@ -58,16 +58,50 @@ const bildtexte = import.meta.glob('/content/bilder/**/*.txt', {
   import: 'default',
 });
 
-/** Das erste Foto (nach Dateiname) für eine Kirche und einen Reiter, oder null. */
-export function bild(kirche, r) {
+/** Alle Fotos (nach Dateiname sortiert) für eine Kirche und einen Reiter. */
+export function bilder(kirche, r) {
   const ordner = `/content/bilder/${kirche}/${r}/`;
-  const pfad = Object.keys(fotos)
+  return Object.keys(fotos)
     .filter((p) => p.startsWith(ordner) && !p.slice(ordner.length).includes('/'))
-    .sort((a, b) => a.localeCompare(b, 'de', { numeric: true }))[0];
-  if (!pfad) return null;
-  const info = bildtexte[pfad.replace(/\.[^.]+$/, '.txt')];
-  const alt = info ? String(info).replace(/^﻿/, '').split(/\r?\n/)[0].trim() : '';
-  return { src: fotos[pfad], alt };
+    .sort((a, b) => a.localeCompare(b, 'de', { numeric: true }))
+    .map((pfad) => {
+      const info = bildtexte[pfad.replace(/\.[^.]+$/, '.txt')];
+      const alt = info ? String(info).replace(/^﻿/, '').split(/\r?\n/)[0].trim() : '';
+      return { src: fotos[pfad], alt };
+    });
+}
+
+/** Das erste Foto für eine Kirche und einen Reiter, oder null. */
+export function bild(kirche, r) {
+  return bilder(kirche, r)[0] ?? null;
+}
+
+// ---------- Gedankenreisen (je Kirche eigene Texte) ----------
+// content/gedankenreisen/<kirche>/01-name.md + optional gleichnamiges Foto (.jpg/.png/.webp)
+const reisen = import.meta.glob('/content/gedankenreisen/*/*.md', { eager: true });
+const reiseFotos = import.meta.glob('/content/gedankenreisen/*/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
+  eager: true,
+  import: 'default',
+});
+
+/** Alle Gedankenreisen einer Kirche, sortiert nach Dateiname. */
+export function gedankenreisen(kirche) {
+  const ordner = `/content/gedankenreisen/${kirche}/`;
+  return Object.keys(reisen)
+    .filter((p) => p.startsWith(ordner))
+    .sort((a, b) => a.localeCompare(b, 'de', { numeric: true }))
+    .map((pfad) => {
+      const modul = reisen[pfad];
+      const basis = pfad.replace(/\.md$/, '');
+      const fotoPfad = Object.keys(reiseFotos).find((f) => f.replace(/\.[^.]+$/, '') === basis);
+      const name = basis.slice(ordner.length).replace(/^\d+[-_ ]*/, '').replace(/[-_]+/g, ' ');
+      return {
+        id: 'reise-' + basis.slice(ordner.length),
+        titel: modul.frontmatter.titel || name,
+        Content: modul.Content,
+        foto: fotoPfad ? { src: reiseFotos[fotoPfad], alt: modul.frontmatter.bildbeschreibung || '' } : null,
+      };
+    });
 }
 
 // ---------- Audio ----------

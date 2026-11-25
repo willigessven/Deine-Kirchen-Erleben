@@ -1,0 +1,80 @@
+---
+// Gedankenreisen zum Mitlesen (content/gedankenreisen/<kirche>/). Jede Reise ist aufklappbar.
+import { Image } from 'astro:assets';
+
+interface Props {
+  reisen: { id: string; titel: string; Content: any; foto: { src: any; alt: string } | null }[];
+}
+const { reisen } = Astro.props;
+---
+<section class="reisen" aria-labelledby="reisen-titel">
+  <h2 id="reisen-titel">Gedankenreisen zum Lesen</h2>
+  <p class="reisen-hinweis">Tippe auf eine Gedankenreise, um sie zu öffnen.</p>
+  {reisen.map(({ id, titel, Content, foto }) => (
+    <details class="reise" id={id}>
+      <summary>{titel}</summary>
+      <div class="reise-inhalt">
+        {foto && (
+          <Image
+            class="reise-foto"
+            src={foto.src}
+            alt={foto.alt}
+            widths={[360, 720]}
+            sizes="(max-width: 40rem) 100vw, 40rem"
+            format="webp"
+            quality={60}
+            loading="lazy"
+          />
+        )}
+        <Content />
+      </div>
+    </details>
+  ))}
+</section>
+
+<style>
+  .reisen { margin-top: 2.5rem; }
+
+  /* Platz für die mitlaufende Kirchenleiste, wenn per Link zu einer Reise gesprungen wird */
+  .reise { scroll-margin-top: 8rem; }
+
+  .reisen h2 { margin-bottom: 0.25rem; }
+
+  .reisen-hinweis {
+    color: var(--text-leise);
+    margin: 0 0 1rem;
+  }
+
+  .reise {
+    border: 1px solid var(--gold-schmuck);
+    border-radius: var(--radius);
+    background: #fff;
+    margin-bottom: 0.75rem;
+  }
+
+  .reise summary {
+    cursor: pointer;
+    padding: 0.9rem 1rem;
+    font-family: var(--schrift-titel);
+    font-size: 1.15rem;
+    color: var(--weinrot);
+    min-height: 2.75rem;
+  }
+
+  .reise[open] summary { border-bottom: 1px solid var(--creme-dunkel); }
+
+  .reise-inhalt { padding: 1rem; }
+
+  .reise-inhalt :global(p) { margin: 0 0 1rem; }
+  .reise-inhalt :global(p:last-child) { margin-bottom: 0; }
+
+  .reise-foto {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 24rem;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+  }
+</style>

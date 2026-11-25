@@ -5,8 +5,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AudioListe from '../../components/AudioListe.astro';
 import Termine from '../../components/Termine.astro';
 import Kopfhoerer from '../../components/Kopfhoerer.astro';
+import Gedankenreisen from '../../components/Gedankenreisen.astro';
 import { Image } from 'astro:assets';
-import { kirchen, reiter, text, audioListe, bild, reiterUrl, url, aktion } from '../../data/site.js';
+import { kirchen, reiter, text, audioListe, bilder, gedankenreisen, reiterUrl, url, aktion } from '../../data/site.js';
 
 export function getStaticPaths() {
   return kirchen.flatMap((k) => [
@@ -21,7 +22,8 @@ const index = reiter.findIndex((r) => r.slug === aktiv.slug);
 const naechster = reiter[(index + 1) % reiter.length];
 const stuecke = aktiv.audio ? audioListe(kirche.slug, aktiv.slug) : [];
 const titel = frontmatter.titel || aktiv.name;
-const foto = bild(kirche.slug, aktiv.slug);
+const [foto, ...weitereFotos] = bilder(kirche.slug, aktiv.slug);
+const reisen = aktiv.slug === 'kirche-fuer-dich' ? gedankenreisen(kirche.slug) : [];
 ---
 <BaseLayout
   title={`${titel} – ${kirche.name}`}
@@ -81,6 +83,26 @@ const foto = bild(kirche.slug, aktiv.slug);
     )}
 
     {aktiv.audio && <AudioListe stuecke={stuecke} />}
+
+    {reisen.length > 0 && <Gedankenreisen reisen={reisen} />}
+
+    {weitereFotos.length > 0 && (
+      <ul class="galerie" aria-label="Weitere Fotos">
+        {weitereFotos.map((f) => (
+          <li>
+            <Image
+              src={f.src}
+              alt={f.alt}
+              widths={[360, 720]}
+              sizes="(max-width: 40rem) 100vw, 40rem"
+              format="webp"
+              quality={60}
+              loading="lazy"
+            />
+          </li>
+        ))}
+      </ul>
+    )}
   </article>
 
   <a class="weiter" href={reiterUrl(kirche.slug, naechster.slug)}>
@@ -199,6 +221,24 @@ const foto = bild(kirche.slug, aktiv.slug);
   }
 
   .text :global(p) { margin-bottom: 1rem; }
+
+  .galerie {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .galerie img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 26rem;
+    object-fit: cover;
+    border-radius: var(--radius);
+    background: var(--creme-dunkel);
+  }
 
   .segenswort {
     margin: 1.75rem 0 0;

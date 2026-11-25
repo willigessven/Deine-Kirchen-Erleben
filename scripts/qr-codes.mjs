@@ -173,4 +173,43 @@ for (const k of kirchen) {
   pdf(html);
 }
 
+// ---------- QR-Codes in den Infotafel-Entwurf einsetzen ----------
+// Vorlage: qr-codes/vorlagen/infotafeln-entwurf.pdf (aus Canva o. ä.). Seiten 1–3 haben einen
+// leeren Schleifen-Rahmen, dort kommt der Code hinein. Seite 4 (Hoffnungsbild, Licht) hat keinen.
+// Rahmenmitte in pt von oben gemessen; ändert sich der Entwurf, hier anpassen.
+const vorlage = path.join(ZIEL, 'vorlagen', 'infotafeln-entwurf.pdf');
+const tafeln = [
+  { seite: 1, reiter: 'klang', mitteVonOben: 340 },
+  { seite: 2, reiter: 'kirche-fuer-dich', mitteVonOben: 297.5 },
+  { seite: 3, reiter: 'segen', mitteVonOben: 247.5 },
+];
+if (fs.existsSync(vorlage)) {
+  const { PDFDocument, StandardFonts, rgb } = await import('pdf-lib');
+  console.log('Infotafeln:');
+  for (const k of kirchen) {
+    const doc = await PDFDocument.load(fs.readFileSync(vorlage));
+    const schrift = await doc.embedFont(StandardFonts.Helvetica);
+    for (const t of tafeln) {
+      const url = `${BASIS}/${k.slug}/${t.reiter}/`;
+      const png = await QRCode.toBuffer(url, { ...qrOpts, margin: 1, width: 1000 });
+      const kontrolle = PNG.sync.read(png);
+      const res = jsQR(new Uint8ClampedArray(kontrolle.data), kontrolle.width, kontrolle.height);
+      if (!res || res.data !== url) throw new Error(`QR-Code fehlerhaft: Infotafel ${k.slug} ${t.reiter}`);
+      const seite = doc.getPage(t.seite - 1);
+      const box = seite.getMediaBox();
+      const groesse = 140; // pt, etwa 49 mm
+      const mitteX = box.x + box.width / 2;
+      const mitteY = box.y + box.height - t.mitteVonOben + 6; // etwas höher, Platz für den Kirchennamen
+      seite.drawImage(await doc.embedPng(png), { x: mitteX - groesse / 2, y: mitteY - groesse / 2, width: groesse, height: groesse });
+      const name = k.name;
+      const breite = schrift.widthOfTextAtSize(name, 9);
+      seite.drawText(name, { x: mitteX - breite / 2, y: mitteY - groesse / 2 - 12, size: 9, font: schrift, color: rgb(0.42, 0.12, 0.18) });
+      console.log('  OK', url);
+    }
+    const datei = path.join(ZIEL, `infotafeln-${k.slug}.pdf`);
+    fs.writeFileSync(datei, await doc.save());
+    console.log('  PDF', path.relative(process.cwd(), datei));
+  }
+}
+
 console.log('Fertig.');
