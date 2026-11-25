@@ -45,6 +45,31 @@ export function text(name) {
   return modul;
 }
 
+// ---------- Bilder ----------
+// Ein Foto pro Kirche und Reiter: content/bilder/<kirche>/<reiter>/01-name.jpg
+// + gleichnamige .txt mit der Bildbeschreibung (Alternativtext).
+const fotos = import.meta.glob('/content/bilder/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
+  eager: true,
+  import: 'default',
+});
+const bildtexte = import.meta.glob('/content/bilder/**/*.txt', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+});
+
+/** Das erste Foto (nach Dateiname) für eine Kirche und einen Reiter, oder null. */
+export function bild(kirche, r) {
+  const ordner = `/content/bilder/${kirche}/${r}/`;
+  const pfad = Object.keys(fotos)
+    .filter((p) => p.startsWith(ordner) && !p.slice(ordner.length).includes('/'))
+    .sort((a, b) => a.localeCompare(b, 'de', { numeric: true }))[0];
+  if (!pfad) return null;
+  const info = bildtexte[pfad.replace(/\.[^.]+$/, '.txt')];
+  const alt = info ? String(info).replace(/^﻿/, '').split(/\r?\n/)[0].trim() : '';
+  return { src: fotos[pfad], alt };
+}
+
 // ---------- Audio ----------
 const mp3s = import.meta.glob('/content/audio/**/*.mp3', {
   eager: true,

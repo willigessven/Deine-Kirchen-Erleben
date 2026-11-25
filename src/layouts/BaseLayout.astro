@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Flamme from '../components/Flamme.astro';
 import { aktion, gemeinde, links, url, text } from '../data/site.js';
 
 // Optionale Ansprechperson aus content/texte/start.md
@@ -28,7 +27,6 @@ const voller = title === aktion ? aktion : `${title} · ${aktion}`;
   <body>
     <header class="kopf">
       <a class="kopf-link" href={url('/')}>
-        <Flamme groesse={18} />
         <span>{aktion}</span>
       </a>
     </header>
