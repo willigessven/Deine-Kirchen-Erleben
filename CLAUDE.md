@@ -46,4 +46,7 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 - Optionale Felder: Segenswort (`segen.md`), Ansprechperson (`start.md`).
 - Echte MP3s einspielen, Textentwürfe abstimmen.
 
+## QR-Codes
+- `npm run qr` (`scripts/qr-codes.mjs`) erzeugt alle Codes (beide Kirchen + je 6 Reiter) als SVG/PNG,
+  prüft sie per Decoder und erstellt A4-PDFs in `qr-codes/` (PDF über Microsoft Edge).
 
