@@ -1,0 +1,9 @@
+Fotos für die Website. Ein Ordner pro Kirche und Reiter, zum Beispiel:
+  bilder/michaelskirche/licht/        → Dein Licht im Advent (Michaelskirche)
+  bilder/pauluskirche/segen/          → Segen spüren (Pauluskirche)
+
+Es wird das erste Foto im Ordner gezeigt (nach Dateiname, also 01-… vor 02-…).
+Erlaubt: .jpg, .jpeg, .png, .webp. Die Website verkleinert die Fotos automatisch.
+Gleichnamige .txt-Datei (z. B. 01-altar.txt): kurze Beschreibung des Fotos für Menschen,
+die nicht sehen können (wird nicht angezeigt, aber vorgelesen). Bitte immer mit anlegen.
+Kein Foto im Ordner = auf der Seite erscheint kein Bild.

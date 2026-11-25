@@ -62,6 +62,21 @@ content/audio/pauluskirche/kirche-fuer-dich/    → Kirche für dich (Pauluskirc
 Ist ein Ordner leer, steht auf der Seite „Hier erklingt bald Musik“.
 Die `LIESMICH.txt` in den Ordnern bitte liegen lassen.
 
+## Fotos hinzufügen oder austauschen
+
+Auf jeder Seite kann oben ein Foto stehen. Die Fotos liegen in `content/bilder/`, ein Ordner pro Kirche und Reiter:
+
+```
+content/bilder/michaelskirche/licht/   → Dein Licht im Advent (Michaelskirche)
+content/bilder/pauluskirche/segen/     → Segen spüren (Pauluskirche)
+```
+
+1. Foto (`.jpg`, `.png` oder `.webp`) in den passenden Ordner legen, Name mit Nummer vorne, z. B. `01-altar.jpg`. Gezeigt wird immer das **erste** Foto im Ordner.
+2. Eine Textdatei mit gleichem Namen anlegen (`01-altar.txt`) und darin in einem Satz beschreiben, was auf dem Foto zu sehen ist. Das wird nicht angezeigt, aber für blinde Menschen vorgelesen.
+3. Die Website verkleinert die Fotos beim Bauen automatisch, du musst sie nicht vorher verkleinern. Bitte nur eigene Fotos verwenden oder solche, für die die Gemeinde die Rechte hat.
+
+Kein Foto im Ordner = auf dieser Seite erscheint kein Bild. Ein Foto entfernen: Datei löschen.
+
 ## Dateien im Browser bei GitHub hochladen (ohne Programme)
 
 1. Bei GitHub anmelden und das Repository der Website öffnen.

@@ -15,7 +15,9 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 
 ## Aufbau
 - `src/data/site.js`: Kirchen, Reiter, Links, Laden von Texten (`content/texte/*.md`) und Audio
-  (`content/audio/<kirche>/<reiter>/*.mp3` + optionale gleichnamige `.txt`).
+  (`content/audio/<kirche>/<reiter>/*.mp3` + optionale gleichnamige `.txt`) und Fotos
+  (`content/bilder/<kirche>/<reiter>/`, erstes Foto je Ordner, gleichnamige `.txt` = Alternativtext;
+  Ausgabe über `astro:assets` als WebP 360/720 px). Nur eigene Innenaufnahmen verwenden.
 - `src/pages/index.astro`: Startseite mit Kirchenauswahl.
 - `src/pages/[kirche]/[...reiter].astro`: alle Kirchenseiten. `/michaelskirche/` zeigt den ersten Reiter.
 - `src/layouts/BaseLayout.astro`, `src/components/*`.

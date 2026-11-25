@@ -5,7 +5,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AudioListe from '../../components/AudioListe.astro';
 import Termine from '../../components/Termine.astro';
 import Kopfhoerer from '../../components/Kopfhoerer.astro';
-import { kirchen, reiter, text, audioListe, reiterUrl, url, aktion } from '../../data/site.js';
+import { Image } from 'astro:assets';
+import { kirchen, reiter, text, audioListe, bild, reiterUrl, url, aktion } from '../../data/site.js';
 
 export function getStaticPaths() {
   return kirchen.flatMap((k) => [
@@ -20,6 +21,7 @@ const index = reiter.findIndex((r) => r.slug === aktiv.slug);
 const naechster = reiter[(index + 1) % reiter.length];
 const stuecke = aktiv.audio ? audioListe(kirche.slug, aktiv.slug) : [];
 const titel = frontmatter.titel || aktiv.name;
+const foto = bild(kirche.slug, aktiv.slug);
 ---
 <BaseLayout
   title={`${titel} – ${kirche.name}`}
@@ -51,6 +53,18 @@ const titel = frontmatter.titel || aktiv.name;
     <h1>{titel}</h1>
     {frontmatter.untertitel && <p class="untertitel">{frontmatter.untertitel}</p>}
     <hr class="zierlinie" />
+    {foto && (
+      <Image
+        class="foto"
+        src={foto.src}
+        alt={foto.alt}
+        widths={[360, 720]}
+        sizes="(max-width: 40rem) 100vw, 40rem"
+        format="webp"
+        quality={60}
+        loading="eager"
+      />
+    )}
     <div class="text">
       <Content />
     </div>
@@ -171,6 +185,17 @@ const titel = frontmatter.titel || aktiv.name;
     font-style: italic;
     font-size: 1.1rem;
     margin: 0;
+  }
+
+  .foto {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 22rem;
+    object-fit: cover;
+    margin: 0 0 1.5rem;
+    border-radius: var(--radius);
+    background: var(--creme-dunkel);
   }
 
   .text :global(p) { margin-bottom: 1rem; }
