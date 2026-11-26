@@ -21,3 +21,29 @@
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Den Reiter "Dein Hoffnungsbild" gibt es nicht mehr (Hoffnungsbilder liegen in der Kirche aus).
+# Alte Links und QR-Codes führen auf die Startseite der jeweiligen Kirche.
+[[redirects]]
+  from = "/michaelskirche/hoffnungsbild/*"
+  to = "/michaelskirche/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/michaelskirche/hoffnungsbild"
+  to = "/michaelskirche/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/pauluskirche/hoffnungsbild/*"
+  to = "/pauluskirche/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/pauluskirche/hoffnungsbild"
+  to = "/pauluskirche/"
+  status = 301
+  force = true

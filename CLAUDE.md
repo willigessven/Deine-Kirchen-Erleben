@@ -16,10 +16,11 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 ## Aufbau
 - `src/data/site.js`: Kirchen, Reiter, Links, Laden von Texten (`content/texte/*.md`) und Audio
   (`content/audio/<kirche>/<reiter>/*.mp3` + optionale gleichnamige `.txt`) und Fotos
-  (`content/bilder/<kirche>/<reiter>/`, erstes Foto oben, weitere als Galerie unten, gleichnamige `.txt` = Alternativtext;
+  (`content/bilder/<kirche>/<reiter>/`, erstes Foto oben, zweites nach dem Text, weitere unten, gleichnamige `.txt` = Alternativtext;
   Ausgabe über `astro:assets` als WebP 360/720 px). Nur eigene Innenaufnahmen verwenden.
 - `content/gedankenreisen/<kirche>/*.md` (+ gleichnamiges Foto): Gedankenreisen zum Aufklappen auf `kirche-fuer-dich`,
-  je Kirche eigene Texte (Komponente `Gedankenreisen.astro`).
+  je Kirche eigene Texte. `content/segen/*.md`: Anleitungen Segen/Tauferinnerung auf `segen` (beide Kirchen).
+  Beides über die Komponente `Aufklappliste.astro`.
 - `src/pages/index.astro`: Startseite mit Kirchenauswahl.
 - `src/pages/[kirche]/[...reiter].astro`: alle Kirchenseiten. `/michaelskirche/` zeigt den ersten Reiter.
 - `src/layouts/BaseLayout.astro`, `src/components/*`.
@@ -27,7 +28,8 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 
 ## Regeln
 - **URLs nicht ändern** (`/michaelskirche/`, `/pauluskirche/`, Reiter-Slugs `licht`, `klang`,
-  `hoffnungsbild`, `andachten`, `segen`, `kirche-fuer-dich`). Sie stehen auf gedruckten QR-Codes.
+  `andachten`, `segen`, `kirche-fuer-dich`). Reiter `hoffnungsbild` wurde am 26.11.2026 auf Wunsch entfernt,
+  `netlify.toml` leitet `/<kirche>/hoffnungsbild/` auf `/<kirche>/` um. Sie stehen auf gedruckten QR-Codes.
   Vor Änderungen an URLs oder Ordnerstruktur immer nachfragen.
 - Inhalte pflegt eine nicht technische Person nur über `content/`. Neue Funktionen so bauen, dass sie
   nie am Code arbeiten muss.
@@ -51,7 +53,7 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 - Echte MP3s einspielen, Textentwürfe abstimmen.
 
 ## QR-Codes
-- `npm run qr` (`scripts/qr-codes.mjs`) erzeugt alle Codes (beide Kirchen + je 6 Reiter) als SVG/PNG,
+- `npm run qr` (`scripts/qr-codes.mjs`) erzeugt alle Codes (beide Kirchen + je 5 Reiter) als SVG/PNG,
   prüft sie per Decoder und erstellt A4-PDFs in `qr-codes/` (PDF über Microsoft Edge).
 - Außerdem setzt es die Codes in den Infotafel-Entwurf `qr-codes/vorlagen/infotafeln-entwurf.pdf` ein
   (Seite 1 klang, 2 kirche-fuer-dich, 3 segen; Seite 4 ohne Code) → `qr-codes/infotafeln-<kirche>.pdf` (pdf-lib).

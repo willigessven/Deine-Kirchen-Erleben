@@ -1,0 +1,100 @@
+---
+// Liste aufklappbarer Texte, z. B. Gedankenreisen (content/gedankenreisen/<kirche>/)
+// oder Segen-Anleitungen (content/segen/). Jeder Eintrag lässt sich auf- und zuklappen.
+import { Image } from 'astro:assets';
+
+interface Props {
+  ueberschrift: string;
+  kennung: string;
+  reisen: { id: string; titel: string; Content: any; foto: { src: any; alt: string } | null }[];
+}
+const { ueberschrift, kennung, reisen } = Astro.props;
+---
+<section class="reisen" aria-labelledby={kennung}>
+  <h2 id={kennung}>{ueberschrift}</h2>
+  <p class="reisen-hinweis">Tippe auf einen Titel, um ihn zu öffnen.</p>
+  {reisen.map(({ id, titel, Content, foto }) => (
+    <details class="reise" id={id}>
+      <summary>{titel}</summary>
+      <div class="reise-inhalt">
+        {foto && (
+          <Image
+            class="reise-foto"
+            src={foto.src}
+            alt={foto.alt}
+            widths={[360, 720]}
+            sizes="(max-width: 40rem) 100vw, 40rem"
+            format="webp"
+            quality={60}
+            loading="lazy"
+          />
+        )}
+        <Content />
+      </div>
+    </details>
+  ))}
+</section>
+
+<style>
+  .reisen { margin-top: 2.5rem; }
+
+  /* Platz für die mitlaufende Kirchenleiste, wenn per Link zu einer Reise gesprungen wird */
+  .reise { scroll-margin-top: 8rem; }
+
+  .reisen h2 { margin-bottom: 0.25rem; }
+
+  .reisen-hinweis {
+    color: var(--text-leise);
+    margin: 0 0 1rem;
+  }
+
+  .reise {
+    border: 1px solid var(--gold-schmuck);
+    border-radius: var(--radius);
+    background: #fff;
+    margin-bottom: 0.75rem;
+  }
+
+  .reise summary {
+    cursor: pointer;
+    padding: 0.9rem 1rem;
+    font-family: var(--schrift-titel);
+    font-size: 1.15rem;
+    color: var(--weinrot);
+    min-height: 2.75rem;
+  }
+
+  .reise[open] summary { border-bottom: 1px solid var(--creme-dunkel); }
+
+  .reise-inhalt { padding: 1rem; }
+
+  .reise-inhalt :global(p) { margin: 0 0 1rem; }
+  .reise-inhalt :global(p:last-child) { margin-bottom: 0; }
+
+  .reise-foto {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 24rem;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+  }
+</style>
+
+<style>
+  /* Formatierung der Anleitungen (Zwischenüberschriften, Schritte, Gebete) */
+  .reise-inhalt :global(h3) { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; color: var(--weinrot); }
+  .reise-inhalt :global(ol), .reise-inhalt :global(ul) { margin: 0 0 1rem; padding-left: 1.4rem; }
+  .reise-inhalt :global(li) { margin-bottom: 0.4rem; }
+  .reise-inhalt :global(li ul) { margin: 0.4rem 0 0; }
+  .reise-inhalt :global(blockquote) {
+    margin: 0 0 1rem;
+    padding: 0.6rem 0.9rem;
+    border-left: 3px solid var(--gold-schmuck);
+    background: var(--creme);
+    font-style: italic;
+  }
+  .reise-inhalt :global(blockquote p) { margin: 0; }
+  .reise-inhalt :global(hr) { border: 0; border-top: 1px solid var(--gold-schmuck); margin: 1.25rem 0; }
+</style>

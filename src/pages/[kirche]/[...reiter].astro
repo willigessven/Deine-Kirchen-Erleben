@@ -5,9 +5,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AudioListe from '../../components/AudioListe.astro';
 import Termine from '../../components/Termine.astro';
 import Kopfhoerer from '../../components/Kopfhoerer.astro';
-import Gedankenreisen from '../../components/Gedankenreisen.astro';
+import Aufklappliste from '../../components/Aufklappliste.astro';
 import { Image } from 'astro:assets';
-import { kirchen, reiter, text, audioListe, bilder, gedankenreisen, reiterUrl, url, aktion } from '../../data/site.js';
+import { kirchen, reiter, text, audioListe, bilder, gedankenreisen, segenAnleitungen, reiterUrl, url, aktion } from '../../data/site.js';
 
 export function getStaticPaths() {
   return kirchen.flatMap((k) => [
@@ -22,8 +22,10 @@ const index = reiter.findIndex((r) => r.slug === aktiv.slug);
 const naechster = reiter[(index + 1) % reiter.length];
 const stuecke = aktiv.audio ? audioListe(kirche.slug, aktiv.slug) : [];
 const titel = frontmatter.titel || aktiv.name;
-const [foto, ...weitereFotos] = bilder(kirche.slug, aktiv.slug);
+// Erstes Foto oben, zweites direkt nach dem Text (Zwischenbild), alle weiteren unten.
+const [foto, zwischenFoto, ...weitereFotos] = bilder(kirche.slug, aktiv.slug);
 const reisen = aktiv.slug === 'kirche-fuer-dich' ? gedankenreisen(kirche.slug) : [];
+const anleitungen = aktiv.slug === 'segen' ? segenAnleitungen() : [];
 ---
 <BaseLayout
   title={`${titel} – ${kirche.name}`}
@@ -71,6 +73,21 @@ const reisen = aktiv.slug === 'kirche-fuer-dich' ? gedankenreisen(kirche.slug) :
       <Content />
     </div>
 
+    {zwischenFoto && (
+      <Image
+        class="foto foto-zwischen"
+        src={zwischenFoto.src}
+        alt={zwischenFoto.alt}
+        widths={[360, 720]}
+        sizes="(max-width: 40rem) 100vw, 40rem"
+        format="webp"
+        quality={60}
+        loading="lazy"
+      />
+    )}
+
+    {anleitungen.length > 0 && <Aufklappliste ueberschrift="Die Anleitungen" kennung="anleitungen-titel" reisen={anleitungen} />}
+
     {frontmatter.segenswort && (
       <figure class="segenswort">
         <blockquote>{frontmatter.segenswort}</blockquote>
@@ -84,7 +101,7 @@ const reisen = aktiv.slug === 'kirche-fuer-dich' ? gedankenreisen(kirche.slug) :
 
     {aktiv.audio && <AudioListe stuecke={stuecke} />}
 
-    {reisen.length > 0 && <Gedankenreisen reisen={reisen} />}
+    {reisen.length > 0 && <Aufklappliste ueberschrift="Gedankenreisen zum Lesen" kennung="reisen-titel" reisen={reisen} />}
 
     {weitereFotos.length > 0 && (
       <ul class="galerie" aria-label="Weitere Fotos">
@@ -219,6 +236,8 @@ const reisen = aktiv.slug === 'kirche-fuer-dich' ? gedankenreisen(kirche.slug) :
     border-radius: var(--radius);
     background: var(--creme-dunkel);
   }
+
+  .foto-zwischen { margin: 1.5rem 0 0; }
 
   .text :global(p) { margin-bottom: 1rem; }
 

@@ -1,0 +1,11 @@
+Anleitungen auf "Segen spüren" (gelten für beide Kirchen).
+Eine Anleitung = eine .md-Datei, Nummer vorne bestimmt die Reihenfolge.
+Auf der Website ist jede Anleitung zum Aufklappen.
+
+Aufbau:
+  ---
+  titel: "Segen spüren – nur für dich"
+  ---
+
+  Text. Eine Leerzeile beginnt einen neuen Absatz.
+  **fett**   ### Zwischenüberschrift   1. nummerierte Schritte   > Gebet (eingerückt)

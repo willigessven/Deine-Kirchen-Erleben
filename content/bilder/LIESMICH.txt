@@ -3,7 +3,7 @@ Fotos für die Website. Ein Ordner pro Kirche und Reiter, zum Beispiel:
   bilder/pauluskirche/segen/          → Segen spüren (Pauluskirche)
 
 Das erste Foto (nach Dateiname, also 01-… vor 02-…) steht groß oben auf der Seite.
-Alle weiteren Fotos im Ordner erscheinen unten auf der Seite untereinander.
+Das zweite Foto steht direkt nach dem Text (Zwischenbild), alle weiteren ganz unten.
 Erlaubt: .jpg, .jpeg, .png, .webp. Die Website verkleinert die Fotos automatisch.
 Gleichnamige .txt-Datei (z. B. 01-altar.txt): kurze Beschreibung des Fotos für Menschen,
 die nicht sehen können (wird nicht angezeigt, aber vorgelesen). Bitte immer mit anlegen.

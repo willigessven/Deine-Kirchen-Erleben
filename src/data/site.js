@@ -20,7 +20,6 @@ export const kirchen = [
 export const reiter = [
   { slug: 'licht', name: 'Dein Licht im Advent', audio: false },
   { slug: 'klang', name: 'Klang der Kirchen', audio: true },
-  { slug: 'hoffnungsbild', name: 'Dein Hoffnungsbild', audio: false },
   { slug: 'andachten', name: 'Adventsandachten', audio: false },
   { slug: 'segen', name: 'Segen spüren', audio: false },
   { slug: 'kirche-fuer-dich', name: 'Kirche für dich', audio: true },
@@ -76,33 +75,38 @@ export function bild(kirche, r) {
   return bilder(kirche, r)[0] ?? null;
 }
 
-// ---------- Gedankenreisen (je Kirche eigene Texte) ----------
-// content/gedankenreisen/<kirche>/01-name.md + optional gleichnamiges Foto (.jpg/.png/.webp)
-const reisen = import.meta.glob('/content/gedankenreisen/*/*.md', { eager: true });
-const reiseFotos = import.meta.glob('/content/gedankenreisen/*/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
-  eager: true,
-  import: 'default',
-});
+// ---------- Aufklappbare Texte ----------
+// Gedankenreisen je Kirche: content/gedankenreisen/<kirche>/01-name.md (+ optional gleichnamiges Foto)
+// Segen-Anleitungen für beide Kirchen: content/segen/01-name.md
+const klappTexte = import.meta.glob(['/content/gedankenreisen/*/*.md', '/content/segen/*.md'], { eager: true });
+const klappFotos = import.meta.glob(
+  ['/content/gedankenreisen/*/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', '/content/segen/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}'],
+  { eager: true, import: 'default' },
+);
 
-/** Alle Gedankenreisen einer Kirche, sortiert nach Dateiname. */
-export function gedankenreisen(kirche) {
-  const ordner = `/content/gedankenreisen/${kirche}/`;
-  return Object.keys(reisen)
-    .filter((p) => p.startsWith(ordner))
+function klappListe(ordner, prefix) {
+  return Object.keys(klappTexte)
+    .filter((p) => p.startsWith(ordner) && !p.slice(ordner.length).includes('/'))
     .sort((a, b) => a.localeCompare(b, 'de', { numeric: true }))
     .map((pfad) => {
-      const modul = reisen[pfad];
+      const modul = klappTexte[pfad];
       const basis = pfad.replace(/\.md$/, '');
-      const fotoPfad = Object.keys(reiseFotos).find((f) => f.replace(/\.[^.]+$/, '') === basis);
+      const fotoPfad = Object.keys(klappFotos).find((f) => f.replace(/\.[^.]+$/, '') === basis);
       const name = basis.slice(ordner.length).replace(/^\d+[-_ ]*/, '').replace(/[-_]+/g, ' ');
       return {
-        id: 'reise-' + basis.slice(ordner.length),
+        id: prefix + basis.slice(ordner.length),
         titel: modul.frontmatter.titel || name,
         Content: modul.Content,
-        foto: fotoPfad ? { src: reiseFotos[fotoPfad], alt: modul.frontmatter.bildbeschreibung || '' } : null,
+        foto: fotoPfad ? { src: klappFotos[fotoPfad], alt: modul.frontmatter.bildbeschreibung || '' } : null,
       };
     });
 }
+
+/** Alle Gedankenreisen einer Kirche, sortiert nach Dateiname. */
+export const gedankenreisen = (kirche) => klappListe(`/content/gedankenreisen/${kirche}/`, 'reise-');
+
+/** Anleitungen Segen und Tauferinnerung (für beide Kirchen gleich). */
+export const segenAnleitungen = () => klappListe('/content/segen/', 'anleitung-');
 
 // ---------- Audio ----------
 const mp3s = import.meta.glob('/content/audio/**/*.mp3', {

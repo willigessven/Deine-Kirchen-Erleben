@@ -8,6 +8,6 @@ Blicke einmal hinter dich, über die Reihen der Stühle hinweg und den Gang entl
 
 Vielleicht fällt noch ein wenig Tageslicht hindurch. Vielleicht ist es draußen schon dunkel und die Farben sind nur noch zu erahnen. Beides gehört zum Advent: die Dunkelheit, das Warten und die Sehnsucht nach Licht.
 
-Das Fenster zeigt einen Engel: Michael. Er steht da in einem hellen Gewand, mit großen Flügeln, umgeben von leuchtendem Rot, Orange und Gelb. Mit seiner Lanze stellt er sich gegen dunkle Mächte unter ihm. Das Fenster erzählt vom Kampf der guten Mächte Gottes gegen die Finsternis.
+Das Fenster zeigt einen Engel: Michael. Er steht da in einem hellen Gewand, mit großen Flügeln, umgeben von leuchtendem Rot, Orange und Gelb. Mit seiner Lanze stellt er sich den dunklen Mächten unter ihm entgegen. Das Fenster erzählt vom Kampf der guten Mächte gegen die Finsternis. Der Engel Michael stellt sich schützend vor die Menschen. Er wacht über sie und behütet sie.
 
-Der Engel Michael stellt sich schützend vor die Menschen. Er wacht über sie und behütet sie. So als würde er uns zusprechen: „Fürchte dich nicht“.
+Jetzt ist Advent. Die Zeit, in der Gott sich auf den Weg zu uns macht. Seine Engel gehen ihm voraus und rufen in die Nacht: Fürchte dich nicht!

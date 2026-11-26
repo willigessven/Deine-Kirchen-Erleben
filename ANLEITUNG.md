@@ -11,7 +11,6 @@ Die Texte liegen in `content/texte/`. Jede Datei gehört zu einem Reiter und gil
 | `start.md` | Startseite |
 | `licht.md` | Dein Licht im Advent |
 | `klang.md` | Klang der Kirchen |
-| `hoffnungsbild.md` | Dein Hoffnungsbild |
 | `andachten.md` | Adventsandachten (inkl. Termine) |
 | `segen.md` | Segen spüren |
 | `kirche-fuer-dich.md` | Kirche für dich |
@@ -51,6 +50,10 @@ content/gedankenreisen/pauluskirche/
 - Optional ein Foto mit gleichem Namen, z. B. `01-elisabeth.jpg`.
 - Auf der Website ist jede Gedankenreise zum Aufklappen. Die gesprochenen Aufnahmen (MP3) kommen wie gewohnt in `content/audio/<kirche>/kirche-fuer-dich/`.
 
+## Anleitungen Segen und Tauferinnerung
+
+Auf „Segen spüren“ stehen aufklappbare Anleitungen, für beide Kirchen gleich. Sie liegen in `content/segen/`, eine Datei pro Anleitung (`01-segen-nur-fuer-dich.md` …). Oben zwischen den `---` steht der `titel:`. Im Text: `### Zwischenüberschrift`, `1.` für nummerierte Schritte, `>` am Zeilenanfang für ein Gebet.
+
 ## Musik und Aufnahmen hinzufügen
 
 ```
@@ -85,7 +88,7 @@ content/bilder/michaelskirche/licht/   → Dein Licht im Advent (Michaelskirche)
 content/bilder/pauluskirche/segen/     → Segen spüren (Pauluskirche)
 ```
 
-1. Foto (`.jpg`, `.png` oder `.webp`) in den passenden Ordner legen, Name mit Nummer vorne, z. B. `01-altar.jpg`. Das **erste** Foto steht groß oben, alle weiteren (`02-…`, `03-…`) erscheinen unten auf der Seite.
+1. Foto (`.jpg`, `.png` oder `.webp`) in den passenden Ordner legen, Name mit Nummer vorne, z. B. `01-altar.jpg`. Das **erste** Foto steht groß oben, das **zweite** direkt nach dem Text (Zwischenbild), alle weiteren ganz unten. Bitte sparsam: ein bis drei Fotos pro Reiter reichen.
 2. Eine Textdatei mit gleichem Namen anlegen (`01-altar.txt`) und darin in einem Satz beschreiben, was auf dem Foto zu sehen ist. Das wird nicht angezeigt, aber für blinde Menschen vorgelesen.
 3. Die Website verkleinert die Fotos beim Bauen automatisch, du musst sie nicht vorher verkleinern. Bitte nur eigene Fotos verwenden oder solche, für die die Gemeinde die Rechte hat.
 

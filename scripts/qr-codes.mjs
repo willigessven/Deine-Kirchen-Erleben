@@ -24,7 +24,6 @@ const kirchen = [
 const reiter = [
   { slug: 'licht', name: 'Dein Licht im Advent', audio: false },
   { slug: 'klang', name: 'Klang der Kirchen', audio: true },
-  { slug: 'hoffnungsbild', name: 'Dein Hoffnungsbild', audio: false },
   { slug: 'andachten', name: 'Adventsandachten', audio: false },
   { slug: 'segen', name: 'Segen spüren', audio: false },
   { slug: 'kirche-fuer-dich', name: 'Kirche für dich', audio: true },
