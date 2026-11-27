@@ -48,7 +48,8 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 ## Offen
 - Live-Adresse: https://deine-kirchen-erleben.netlify.app (in `astro.config.mjs`). QR-Codes zeigen auf
   `/michaelskirche/` und `/pauluskirche/` dieser Adresse.
-- Impressum/Datenschutz-Links in `src/data/site.js` sind noch Platzhalter.
+- Impressum verlinkt auf evangelisch-giessen-nord.de/kontakt, Datenschutzhinweis unter `/datenschutz/`
+  (`src/pages/datenschutz.astro`, nach § 17 DSG-EKD). Website bleibt bis Ende April 2027 online.
 - Optionale Felder: Segenswort (`segen.md`), Ansprechperson (`start.md`).
 - Echte MP3s einspielen, Textentwürfe abstimmen.
 

@@ -5,10 +5,10 @@ export const gemeinde = 'Evangelische Gesamtkirchengemeinde Gießen Nord';
 export const aktion = 'Deine Zeit – Kirche erleben';
 export const oeffnungszeiten = { zeitraum: '4.–17. Dezember', uhrzeit: 'täglich 16–18 Uhr' };
 
-// Platzhalter: durch die echten Seiten der Gemeinde ersetzen.
+// Impressum der Gemeinde (mit Zustimmung der KV-Vorsitzenden), eigener Datenschutzhinweis nach § 17 DSG-EKD.
 export const links = {
-  impressum: 'https://PLATZHALTER-DOMAIN.de/impressum',
-  datenschutz: 'https://PLATZHALTER-DOMAIN.de/datenschutz',
+  impressum: 'https://www.evangelisch-giessen-nord.de/kontakt',
+  datenschutz: '/datenschutz/',
 };
 
 // Die "slug"-Werte stehen in den Adressen und auf den QR-Codes. Nicht ändern!
