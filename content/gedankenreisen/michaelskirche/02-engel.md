@@ -1,6 +1,6 @@
 ---
 titel: "Engel"
-bildbeschreibung: "Schmales buntes Altarfenster der Michaelskirche mit sechs Bildern des Engels Michael, oben links mit einer Waage, oben rechts mit Lanze über einem Drachen"
+bildbeschreibung: "Obere Felder des Altarfensters der Michaelskirche: links der Engel Michael mit einer Waage, rechts mit einer Lanze über einem grünen Drachen"
 ---
 
 Suche dir einen Platz in der Kirche, an dem du dich wohlfühlst. Im Sitzen oder Stehen, in einer Bank oder einfach irgendwo im Raum. Lass dir einen Moment Zeit, um anzukommen. Lasse deine Schultern sinken. Atme einmal tief ein und aus.
