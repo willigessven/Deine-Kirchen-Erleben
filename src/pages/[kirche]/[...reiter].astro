@@ -7,7 +7,7 @@ import Termine from '../../components/Termine.astro';
 import Kopfhoerer from '../../components/Kopfhoerer.astro';
 import Aufklappliste from '../../components/Aufklappliste.astro';
 import { Image } from 'astro:assets';
-import { kirchen, reiter, text, audioListe, bilder, gedankenreisen, segenAnleitungen, reiterUrl, url, aktion } from '../../data/site.js';
+import { kirchen, reiter, text, audioAbschnitte, bilder, gedankenreisen, segenAnleitungen, reiterUrl, url, aktion } from '../../data/site.js';
 
 export function getStaticPaths() {
   return kirchen.flatMap((k) => [
@@ -20,12 +20,18 @@ const { kirche, aktiv } = Astro.props;
 const { frontmatter, Content } = text(aktiv.slug);
 const index = reiter.findIndex((r) => r.slug === aktiv.slug);
 const naechster = reiter[(index + 1) % reiter.length];
-const stuecke = aktiv.audio ? audioListe(kirche.slug, aktiv.slug) : [];
 const titel = frontmatter.titel || aktiv.name;
-// Erstes Foto oben, zweites direkt nach dem Text (Zwischenbild), alle weiteren unten.
+// Erstes Foto oben. Zweites Foto (Zwischenbild): vor dem letzten Abschnitt (z. B. vor Weihnachten
+// oder vor der Tauferinnerung), ohne Abschnitte direkt nach dem Text. Alle weiteren unten.
 const [foto, zwischenFoto, ...weitereFotos] = bilder(kirche.slug, aktiv.slug);
-const reisen = aktiv.slug === 'kirche-fuer-dich' ? gedankenreisen(kirche.slug) : [];
-const anleitungen = aktiv.slug === 'segen' ? segenAnleitungen() : [];
+
+// Abschnitte der Seite: Musik (Unterordner in content/audio), Gedankenreisen oder Anleitungen.
+const bloecke = [
+  ...(aktiv.slug === 'klang' ? audioAbschnitte(kirche.slug, 'klang').map((a) => ({ art: 'audio', ...a })) : []),
+  ...(aktiv.slug === 'kirche-fuer-dich' ? gedankenreisen(kirche.slug).map((a) => ({ art: 'klapp', ...a })) : []),
+  ...(aktiv.slug === 'segen' ? segenAnleitungen().map((a) => ({ art: 'klapp', ...a })) : []),
+];
+const zwischenVor = bloecke.length > 1 ? bloecke.length - 1 : -1; // Index des Abschnitts, vor dem das Zwischenbild steht
 ---
 <BaseLayout
   title={`${titel} – ${kirche.name}`}
@@ -73,20 +79,10 @@ const anleitungen = aktiv.slug === 'segen' ? segenAnleitungen() : [];
       <Content />
     </div>
 
-    {zwischenFoto && (
-      <Image
-        class="foto foto-zwischen"
-        src={zwischenFoto.src}
-        alt={zwischenFoto.alt}
-        widths={[360, 720]}
-        sizes="(max-width: 40rem) 100vw, 40rem"
-        format="webp"
-        quality={60}
-        loading="lazy"
-      />
+    {zwischenFoto && zwischenVor < 0 && (
+      <Image class="foto foto-zwischen" src={zwischenFoto.src} alt={zwischenFoto.alt} widths={[360, 720]}
+        sizes="(max-width: 40rem) 100vw, 40rem" format="webp" quality={60} loading="lazy" />
     )}
-
-    {anleitungen.length > 0 && <Aufklappliste ueberschrift="Die Anleitungen" kennung="anleitungen-titel" reisen={anleitungen} />}
 
     {frontmatter.segenswort && (
       <figure class="segenswort">
@@ -99,9 +95,26 @@ const anleitungen = aktiv.slug === 'segen' ? segenAnleitungen() : [];
       <Termine termine={frontmatter.termine} kircheName={kirche.name} />
     )}
 
-    {aktiv.audio && <AudioListe stuecke={stuecke} />}
+    {aktiv.slug === 'klang' && bloecke.length === 0 && <AudioListe stuecke={[]} />}
 
-    {reisen.length > 0 && <Aufklappliste ueberschrift="Gedankenreisen zum Lesen" kennung="reisen-titel" reisen={reisen} />}
+    {bloecke.map((block, i) => (
+      <>
+        {zwischenFoto && i === zwischenVor && (
+          <Image class="foto foto-zwischen" src={zwischenFoto.src} alt={zwischenFoto.alt} widths={[360, 720]}
+            sizes="(max-width: 40rem) 100vw, 40rem" format="webp" quality={60} loading="lazy" />
+        )}
+        {block.art === 'audio' ? (
+          <AudioListe stuecke={block.stuecke} ueberschrift={block.titel} tipp={i === 0} kennung={`audio-${i}`} />
+        ) : (
+          <Aufklappliste
+            ueberschrift={block.titel || 'Zum Hören und Mitlesen'}
+            kennung={`klapp-${i}`}
+            hinweis={i === 0}
+            reisen={block.eintraege}
+          />
+        )}
+      </>
+    ))}
 
     {weitereFotos.length > 0 && (
       <ul class="galerie" aria-label="Weitere Fotos">

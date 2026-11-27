@@ -2,27 +2,37 @@
 import Kopfhoerer from './Kopfhoerer.astro';
 
 interface Props {
-  stuecke: { src: string; titel: string; hinweis: string }[];
+  stuecke: { src: string; titel: string; mitwirkende: string; beschreibung: string }[];
+  ueberschrift?: string;
+  tipp?: boolean;
+  kennung?: string;
 }
-const { stuecke } = Astro.props;
+const { stuecke, ueberschrift = '', tipp = true, kennung = 'audio' } = Astro.props;
 ---
-<section class="audio" aria-labelledby="audio-titel">
-  <h2 id="audio-titel" class="visually-hidden">Zum Anhören</h2>
+<section class="audio" aria-labelledby={`${kennung}-titel`}>
+  {ueberschrift ? (
+    <h2 id={`${kennung}-titel`} class="audio-abschnitt">{ueberschrift}</h2>
+  ) : (
+    <h2 id={`${kennung}-titel`} class="visually-hidden">Zum Anhören</h2>
+  )}
 
   {stuecke.length === 0 ? (
     <p class="audio-leer">Hier erklingt bald Musik. Schau gern später noch einmal vorbei.</p>
   ) : (
     <>
-      <p class="audio-tipp">
-        <Kopfhoerer groesse={22} />
-        <span>Am schönsten mit Kopfhörern</span>
-      </p>
+      {tipp && (
+        <p class="audio-tipp">
+          <Kopfhoerer groesse={22} />
+          <span>Am schönsten mit Kopfhörern</span>
+        </p>
+      )}
       <ol class="audio-liste">
         {stuecke.map((s, i) => (
           <li class="audio-stueck">
-            <p class="audio-titel" id={`stueck-${i}`}>{s.titel}</p>
-            {s.hinweis && <p class="audio-hinweis">{s.hinweis}</p>}
-            <audio controls preload="none" src={s.src} aria-labelledby={`stueck-${i}`}>
+            <p class="audio-titel" id={`${kennung}-${i}`}>{s.titel}</p>
+            {s.mitwirkende && <p class="audio-mitwirkende">{s.mitwirkende}</p>}
+            {s.beschreibung && <p class="audio-beschreibung">{s.beschreibung}</p>}
+            <audio controls preload="none" src={s.src} aria-labelledby={`${kennung}-${i}`}>
               <a href={s.src}>{s.titel} herunterladen</a>
             </audio>
           </li>
@@ -47,6 +57,11 @@ const { stuecke } = Astro.props;
 
 <style>
   .audio { margin-top: 1.75rem; }
+
+  .audio-abschnitt {
+    margin: 0 0 0.75rem;
+    color: var(--weinrot);
+  }
 
   .audio-tipp {
     display: flex;
@@ -75,14 +90,22 @@ const { stuecke } = Astro.props;
   .audio-titel {
     font-family: var(--schrift-titel);
     color: var(--weinrot);
-    font-size: 1.2rem;
+    font-size: 1.15rem;
+    line-height: 1.3;
     margin: 0 0 0.25rem;
   }
 
-  .audio-hinweis {
+  .audio-mitwirkende {
+    color: var(--gold-text);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+
+  .audio-beschreibung {
     color: var(--text-leise);
     font-size: 0.95rem;
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.25rem;
   }
 
   audio {

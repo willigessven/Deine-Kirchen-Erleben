@@ -1,4 +1,5 @@
 Anleitungen auf "Segen spüren" (gelten für beide Kirchen).
+Unterordner = Abschnitte: 1-Segen, 2-Tauferinnerung (Ordnername ohne Nummer = Überschrift).
 Eine Anleitung = eine .md-Datei, Nummer vorne bestimmt die Reihenfolge.
 Auf der Website ist jede Anleitung zum Aufklappen.
 

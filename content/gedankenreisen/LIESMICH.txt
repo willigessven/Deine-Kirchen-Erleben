@@ -1,19 +1,18 @@
-Gedankenreisen zum Mitlesen, erscheinen auf "Kirche für dich" der jeweiligen Kirche.
+Gedankenreisen, erscheinen auf dem Reiter "Gedankenreisen" der jeweiligen Kirche.
   gedankenreisen/michaelskirche/   → nur Michaelskirche
   gedankenreisen/pauluskirche/     → nur Pauluskirche
 
-Eine Gedankenreise = eine .md-Datei, Nummer vorne bestimmt die Reihenfolge:
-  01-elisabeth.md
+Zu einer Gedankenreise gehören Dateien mit GLEICHEM Namen (Nummer vorne = Reihenfolge):
+  01-rosenwunder.md    Text zum Mitlesen (Pflicht)
+  01-rosenwunder.mp3   Aufnahme (MP3, ca. 128 kbps)
+  01-rosenwunder.jpg   Foto (optional, auch .png)
+  01-rosenwunder.txt   erste Zeile = Beschriftung über der Aufnahme (optional)
 
-Aufbau:
+Aufbau der .md-Datei:
   ---
-  titel: "Elisabeth: Was im Verborgenen blüht"
+  titel: "Das Rosenwunder"
   bildbeschreibung: "Kurze Beschreibung des Fotos für Menschen, die nicht sehen können"
   ---
 
   Erster Absatz. Eine Leerzeile beginnt einen neuen Absatz.
-
-Optional ein Foto mit genau demselben Namen: 01-elisabeth.jpg
-Es erscheint oben in der aufgeklappten Gedankenreise.
-
-Die Aufnahmen zum Hören (MP3) kommen weiterhin nach audio/<kirche>/kirche-fuer-dich/.
+  > am Zeilenanfang = eingerücktes Zitat (z. B. Bibelwort)

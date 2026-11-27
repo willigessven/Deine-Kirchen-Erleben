@@ -9,11 +9,11 @@ Die Texte liegen in `content/texte/`. Jede Datei gehört zu einem Reiter und gil
 | Datei | Reiter |
 |---|---|
 | `start.md` | Startseite |
-| `licht.md` | Dein Licht im Advent |
 | `klang.md` | Klang der Kirchen |
-| `andachten.md` | Adventsandachten (inkl. Termine) |
+| `kirche-fuer-dich.md` | Gedankenreisen |
 | `segen.md` | Segen spüren |
-| `kirche-fuer-dich.md` | Kirche für dich |
+| `licht.md` | Dein Licht im Advent |
+| `andachten.md` | Adventsandachten (inkl. Termine) |
 
 Aufbau einer Datei:
 
@@ -36,48 +36,58 @@ Hier steht der Text. Eine Leerzeile beginnt einen neuen Absatz.
 - **Segenswort** (`segen.md`): Bei `segenswort:` zwischen die Anführungszeichen ein Segenswort aus der Gemeinde schreiben, bei `segenswort_quelle:` optional, von wem es stammt. Es erscheint dann hervorgehoben auf „Segen spüren“. Leer lassen = wird nicht angezeigt.
 - **Ansprechperson** (`start.md`): `kontakt_name`, `kontakt_telefon`, `kontakt_email` ausfüllen, dann steht die Ansprechperson unten auf jeder Seite. Leer lassen = wird nicht angezeigt.
 
-## Gedankenreisen (je Kirche eigene Texte)
+## Gedankenreisen (je Kirche eigene)
 
-Die Gedankenreisen stehen auf „Kirche für dich“, für jede Kirche eigene:
+Die Gedankenreisen stehen auf „Gedankenreisen“, für jede Kirche eigene:
 
 ```
 content/gedankenreisen/michaelskirche/
 content/gedankenreisen/pauluskirche/
 ```
 
-- Eine Datei pro Gedankenreise, z. B. `01-elisabeth.md`. Die Nummer bestimmt die Reihenfolge.
-- Oben zwischen den `---` stehen `titel:` und `bildbeschreibung:` (Beschreibung des Fotos für Menschen, die nicht sehen können).
-- Optional ein Foto mit gleichem Namen, z. B. `01-elisabeth.jpg`.
-- Auf der Website ist jede Gedankenreise zum Aufklappen. Die gesprochenen Aufnahmen (MP3) kommen wie gewohnt in `content/audio/<kirche>/kirche-fuer-dich/`.
+Zu einer Gedankenreise gehören Dateien mit **gleichem Namen**, z. B.:
+
+- `01-rosenwunder.md`: der Text zum Mitlesen. Oben zwischen den `---` stehen `titel:` und `bildbeschreibung:` (Beschreibung des Fotos für Menschen, die nicht sehen können).
+- `01-rosenwunder.mp3`: die Aufnahme (MP3, ca. 128 kbps)
+- `01-rosenwunder.jpg` (oder `.png`): das Foto, optional
+
+Die Nummer vorne bestimmt die Reihenfolge. Auf der Website lässt sich jede Gedankenreise aufklappen: Foto, Aufnahme, darunter der Text.
 
 ## Anleitungen Segen und Tauferinnerung
 
-Auf „Segen spüren“ stehen aufklappbare Anleitungen, für beide Kirchen gleich. Sie liegen in `content/segen/`, eine Datei pro Anleitung (`01-segen-nur-fuer-dich.md` …). Oben zwischen den `---` steht der `titel:`. Im Text: `### Zwischenüberschrift`, `1.` für nummerierte Schritte, `>` am Zeilenanfang für ein Gebet.
-
-## Musik und Aufnahmen hinzufügen
+Auf „Segen spüren“ stehen aufklappbare Anleitungen, für beide Kirchen gleich, in zwei Abschnitten:
 
 ```
-content/audio/michaelskirche/klang/             → Klang der Kirchen (Michaelskirche)
-content/audio/michaelskirche/kirche-fuer-dich/  → Kirche für dich (Michaelskirche)
-content/audio/pauluskirche/klang/               → Klang der Kirchen (Pauluskirche)
-content/audio/pauluskirche/kirche-fuer-dich/    → Kirche für dich (Pauluskirche)
+content/segen/1-Segen/            → Abschnitt „Segen“
+content/segen/2-Tauferinnerung/   → Abschnitt „Tauferinnerung“
 ```
 
-1. MP3-Datei in den passenden Ordner legen (am besten ca. 128 kbps, damit sie auch bei schlechtem Empfang lädt).
-2. Dateiname mit Nummer vorne, die Nummer bestimmt die Reihenfolge:
-   `01-Macht-hoch-die-Tuer.mp3`, `02-Tochter-Zion.mp3`
-   Auf der Website steht dann „Macht hoch die Tuer“, ohne Nummer.
-3. **Optional** schönerer Titel und Hinweis: eine Textdatei mit gleichem Namen, nur `.txt` statt `.mp3`:
-   `01-Macht-hoch-die-Tuer.txt` mit dem Inhalt
-   ```
-   Macht hoch die Tür
-   Gesungen vom Gemeindechor
-   ```
-   Erste Zeile = Titel, alles danach = Hinweis.
-4. Dateien mit **PLATZHALTER** im Namen löschen, sobald echte Aufnahmen da sind.
+Eine Datei pro Anleitung (`01-segen-nur-fuer-dich.md` …). Oben zwischen den `---` steht der `titel:`. Im Text: `### Zwischenüberschrift`, `1.` für nummerierte Schritte, `>` am Zeilenanfang für ein Gebet.
+Das zweite Foto aus `content/bilder/<kirche>/segen/` (Taufbecken/Taufschale) steht vor dem Abschnitt „Tauferinnerung“.
 
-Ist ein Ordner leer, steht auf der Seite „Hier erklingt bald Musik“.
-Die `LIESMICH.txt` in den Ordnern bitte liegen lassen.
+## Musik für „Klang der Kirchen“
+
+```
+content/audio/michaelskirche/klang/1-Advent/        → Abschnitt „Advent“ (Michaelskirche)
+content/audio/michaelskirche/klang/2-Weihnachten/   → Abschnitt „Weihnachten“ (Michaelskirche)
+content/audio/pauluskirche/klang/1-Advent/          → dasselbe für die Pauluskirche
+content/audio/pauluskirche/klang/2-Weihnachten/
+```
+
+Der Ordnername (ohne Nummer) wird zur Überschrift. Die Nummer bestimmt die Reihenfolge der Abschnitte.
+
+1. MP3-Datei in den passenden Ordner legen (am besten ca. 128 kbps, damit sie auch bei schlechtem Empfang lädt). Nur MP3, keine WAV- oder MP4-Dateien.
+2. Dateiname mit Nummer vorne, die Nummer bestimmt die Reihenfolge, z. B. `03-die-nacht-ist-vorgedrungen.mp3`.
+3. Eine Textdatei mit gleichem Namen, nur `.txt` statt `.mp3`:
+   ```
+   Die Nacht ist vorgedrungen (EG 16), Jochen Klepper / Johannes Petzold
+   Gespielt und gesungen von Norbert Kissel
+   Das Lied gehört zu den bekanntesten modernen Adventschorälen (1937/1938).
+   ```
+   1. Zeile = Titel, 2. Zeile = wer singt oder spielt, alles danach = Beschreibung (optional).
+4. Das zweite Foto aus `content/bilder/<kirche>/klang/` steht zwischen den Abschnitten (vor „Weihnachten“).
+
+Sind keine Aufnahmen da, steht auf der Seite „Hier erklingt bald Musik“.
 
 ## Fotos hinzufügen oder austauschen
 
@@ -88,7 +98,7 @@ content/bilder/michaelskirche/licht/   → Dein Licht im Advent (Michaelskirche)
 content/bilder/pauluskirche/segen/     → Segen spüren (Pauluskirche)
 ```
 
-1. Foto (`.jpg`, `.png` oder `.webp`) in den passenden Ordner legen, Name mit Nummer vorne, z. B. `01-altar.jpg`. Das **erste** Foto steht groß oben, das **zweite** direkt nach dem Text (Zwischenbild), alle weiteren ganz unten. Bitte sparsam: ein bis drei Fotos pro Reiter reichen.
+1. Foto (`.jpg`, `.png` oder `.webp`) in den passenden Ordner legen, Name mit Nummer vorne, z. B. `01-altar.jpg`. Das **erste** Foto steht groß oben. Das **zweite** ist ein Zwischenbild: bei „Klang der Kirchen“ vor „Weihnachten“, bei „Segen spüren“ vor „Tauferinnerung“, sonst direkt nach dem Text. Alle weiteren stehen ganz unten. Bitte sparsam: ein bis drei Fotos pro Reiter reichen.
 2. Eine Textdatei mit gleichem Namen anlegen (`01-altar.txt`) und darin in einem Satz beschreiben, was auf dem Foto zu sehen ist. Das wird nicht angezeigt, aber für blinde Menschen vorgelesen.
 3. Die Website verkleinert die Fotos beim Bauen automatisch, du musst sie nicht vorher verkleinern. Bitte nur eigene Fotos verwenden oder solche, für die die Gemeinde die Rechte hat.
 

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { aktion, gemeinde, kirchen, oeffnungszeiten, text, url } from '../data/site.js';
+import { aktion, projekt, kirchen, oeffnungszeiten, text, url } from '../data/site.js';
 
 const { frontmatter, Content } = text('start');
 ---
@@ -10,7 +10,7 @@ const { frontmatter, Content } = text('start');
 >
   <section class="start">
     <h1>{aktion}</h1>
-    <p class="start-gemeinde">{gemeinde}</p>
+    <p class="start-gemeinde">{projekt}</p>
     <hr class="zierlinie mitte" />
 
     <div class="start-text">

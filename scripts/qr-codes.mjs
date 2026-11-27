@@ -22,11 +22,11 @@ const kirchen = [
   { slug: 'pauluskirche', name: 'Pauluskirche' },
 ];
 const reiter = [
-  { slug: 'licht', name: 'Dein Licht im Advent', audio: false },
   { slug: 'klang', name: 'Klang der Kirchen', audio: true },
-  { slug: 'andachten', name: 'Adventsandachten', audio: false },
+  { slug: 'kirche-fuer-dich', name: 'Gedankenreisen', audio: true },
   { slug: 'segen', name: 'Segen spüren', audio: false },
-  { slug: 'kirche-fuer-dich', name: 'Kirche für dich', audio: true },
+  { slug: 'licht', name: 'Dein Licht im Advent', audio: false },
+  { slug: 'andachten', name: 'Adventsandachten', audio: false },
 ];
 
 const qrOpts = { errorCorrectionLevel: 'H', margin: 4, color: { dark: '#6b1e2e', light: '#ffffff' } };

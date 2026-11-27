@@ -14,14 +14,17 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
   `#b8862b` (nur Schmuck) / `#e2b65a` (auf Weinrot).
 
 ## Aufbau
-- `src/data/site.js`: Kirchen, Reiter, Links, Laden von Texten (`content/texte/*.md`) und Audio
-  (`content/audio/<kirche>/<reiter>/*.mp3` + optionale gleichnamige `.txt`) und Fotos
-  (`content/bilder/<kirche>/<reiter>/`, erstes Foto oben, zweites nach dem Text, weitere unten, gleichnamige `.txt` = Alternativtext;
+- `src/data/site.js`: Kirchen, Reiter (Reihenfolge: klang, kirche-fuer-dich = „Gedankenreisen“, segen, licht,
+  andachten), Links, Laden von Texten (`content/texte/*.md`), Audio (`content/audio/<kirche>/klang/<n-Abschnitt>/*.mp3`
+  + gleichnamige `.txt`: Titel / Mitwirkende / Beschreibung; Unterordner = Abschnitte Advent/Weihnachten) und Fotos
+  (`content/bilder/<kirche>/<reiter>/`, erstes Foto oben, zweites vor dem letzten Abschnitt bzw. nach dem Text, weitere unten, gleichnamige `.txt` = Alternativtext;
   Ausgabe über `astro:assets` als WebP 360/720 px). Nur eigene Innenaufnahmen verwenden.
-- `content/gedankenreisen/<kirche>/*.md` (+ gleichnamiges Foto): Gedankenreisen zum Aufklappen auf `kirche-fuer-dich`,
-  je Kirche eigene Texte. `content/segen/*.md`: Anleitungen Segen/Tauferinnerung auf `segen` (beide Kirchen).
+- `content/gedankenreisen/<kirche>/*.md` (+ gleichnamiges Foto und `.mp3`): Gedankenreisen zum Aufklappen auf
+  `kirche-fuer-dich`, je Kirche eigene. `content/segen/<n-Abschnitt>/*.md`: Anleitungen Segen/Tauferinnerung (beide Kirchen).
   Beides über die Komponente `Aufklappliste.astro`.
-- `src/pages/index.astro`: Startseite mit Kirchenauswahl.
+- `src/pages/index.astro`: Startseite mit Kirchenauswahl („Gemeindeprojekt von Joy Williges“).
+- `src/pages/impressum.astro` (Gemeinde als Anbieterin, Joy Williges als Projektverantwortliche),
+  `src/pages/datenschutz.astro` (DSG-EKD).
 - `src/pages/[kirche]/[...reiter].astro`: alle Kirchenseiten. `/michaelskirche/` zeigt den ersten Reiter.
 - `src/layouts/BaseLayout.astro`, `src/components/*`.
 - `ANLEITUNG.md`: Anleitung für die Person, die Inhalte pflegt.
@@ -48,10 +51,11 @@ QR-Code, wählen ihre Kirche und lesen Texte oder hören Audio auf dem Handy.
 ## Offen
 - Live-Adresse: https://deine-kirchen-erleben.netlify.app (in `astro.config.mjs`). QR-Codes zeigen auf
   `/michaelskirche/` und `/pauluskirche/` dieser Adresse.
-- Impressum verlinkt auf evangelisch-giessen-nord.de/kontakt, Datenschutzhinweis unter `/datenschutz/`
-  (`src/pages/datenschutz.astro`, nach § 17 DSG-EKD). Website bleibt bis Ende April 2027 online.
+- Impressum `/impressum/`, Datenschutzhinweis `/datenschutz/` (§ 17 DSG-EKD). Website bleibt bis Ende April 2027 online.
+  Empfohlen: Prüfung durch datenschutz@ekhn.de, AV-Vertrag mit Netlify, Einverständnis namentlich genannter Mitwirkender.
 - Optionale Felder: Segenswort (`segen.md`), Ansprechperson (`start.md`).
-- Echte MP3s einspielen, Textentwürfe abstimmen.
+- Audio umwandeln: WAV/MP4 → MP3 128 kbps (ffmpeg, z. B. npm-Paket ffmpeg-static außerhalb des Projekts).
+  Quelldateien der Nutzerin: USB-Stick (F:) bzw. `D:Gemeindeprojekt webbi dateien`.
 
 ## QR-Codes
 - `npm run qr` (`scripts/qr-codes.mjs`) erzeugt alle Codes (beide Kirchen + je 5 Reiter) als SVG/PNG,

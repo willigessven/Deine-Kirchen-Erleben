@@ -3,11 +3,12 @@
 
 export const gemeinde = 'Evangelische Gesamtkirchengemeinde Gießen Nord';
 export const aktion = 'Deine Zeit – Kirche erleben';
+export const projekt = 'Gemeindeprojekt von Joy Williges';
 export const oeffnungszeiten = { zeitraum: '4.–17. Dezember', uhrzeit: 'täglich 16–18 Uhr' };
 
-// Impressum der Gemeinde (mit Zustimmung der KV-Vorsitzenden), eigener Datenschutzhinweis nach § 17 DSG-EKD.
+// Eigenes Impressum (Gemeinde als Anbieterin, Joy Williges als Projektverantwortliche) und Datenschutzhinweis nach § 17 DSG-EKD.
 export const links = {
-  impressum: 'https://www.evangelisch-giessen-nord.de/kontakt',
+  impressum: '/impressum/',
   datenschutz: '/datenschutz/',
 };
 
@@ -18,11 +19,11 @@ export const kirchen = [
 ];
 
 export const reiter = [
-  { slug: 'licht', name: 'Dein Licht im Advent', audio: false },
   { slug: 'klang', name: 'Klang der Kirchen', audio: true },
-  { slug: 'andachten', name: 'Adventsandachten', audio: false },
+  { slug: 'kirche-fuer-dich', name: 'Gedankenreisen', audio: true },
   { slug: 'segen', name: 'Segen spüren', audio: false },
-  { slug: 'kirche-fuer-dich', name: 'Kirche für dich', audio: true },
+  { slug: 'licht', name: 'Dein Licht im Advent', audio: false },
+  { slug: 'andachten', name: 'Adventsandachten', audio: false },
 ];
 
 /** Adresse innerhalb der Website, funktioniert auch, wenn die Seite in einem Unterordner liegt. */
@@ -76,45 +77,57 @@ export function bild(kirche, r) {
 }
 
 // ---------- Aufklappbare Texte ----------
-// Gedankenreisen je Kirche: content/gedankenreisen/<kirche>/01-name.md (+ optional gleichnamiges Foto)
-// Segen-Anleitungen für beide Kirchen: content/segen/01-name.md
-const klappTexte = import.meta.glob(['/content/gedankenreisen/*/*.md', '/content/segen/*.md'], { eager: true });
+// Gedankenreisen je Kirche: content/gedankenreisen/<kirche>/01-name.md
+//   + optional gleichnamiges Foto (.jpg …) und gleichnamige Aufnahme (.mp3)
+// Segen-Anleitungen für beide Kirchen: content/segen/<1-abschnitt>/01-name.md
+const klappTexte = import.meta.glob(['/content/gedankenreisen/**/*.md', '/content/segen/**/*.md'], { eager: true });
 const klappFotos = import.meta.glob(
-  ['/content/gedankenreisen/*/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', '/content/segen/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}'],
+  ['/content/gedankenreisen/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', '/content/segen/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}'],
   { eager: true, import: 'default' },
 );
 
-function klappListe(ordner, prefix) {
-  return Object.keys(klappTexte)
-    .filter((p) => p.startsWith(ordner) && !p.slice(ordner.length).includes('/'))
-    .sort((a, b) => a.localeCompare(b, 'de', { numeric: true }))
-    .map((pfad) => {
-      const modul = klappTexte[pfad];
-      const basis = pfad.replace(/\.md$/, '');
-      const fotoPfad = Object.keys(klappFotos).find((f) => f.replace(/\.[^.]+$/, '') === basis);
-      const name = basis.slice(ordner.length).replace(/^\d+[-_ ]*/, '').replace(/[-_]+/g, ' ');
-      return {
-        id: prefix + basis.slice(ordner.length),
-        titel: modul.frontmatter.titel || name,
-        Content: modul.Content,
-        foto: fotoPfad ? { src: klappFotos[fotoPfad], alt: modul.frontmatter.bildbeschreibung || '' } : null,
-      };
-    });
+function klappEintrag(pfad, prefix) {
+  const modul = klappTexte[pfad];
+  const basis = pfad.replace(/\.md$/, '');
+  const datei = basis.slice(basis.lastIndexOf('/') + 1);
+  const fotoPfad = Object.keys(klappFotos).find((f) => f.replace(/\.[^.]+$/, '') === basis);
+  return {
+    id: prefix + datei,
+    titel: modul.frontmatter.titel || datei.replace(/^\d+[-_ ]*/, '').replace(/[-_]+/g, ' '),
+    Content: modul.Content,
+    foto: fotoPfad ? { src: klappFotos[fotoPfad], alt: modul.frontmatter.bildbeschreibung || '' } : null,
+    aufnahme: aufnahmeZu(basis),
+  };
 }
 
-/** Alle Gedankenreisen einer Kirche, sortiert nach Dateiname. */
-export const gedankenreisen = (kirche) => klappListe(`/content/gedankenreisen/${kirche}/`, 'reise-');
+/** Aufklappbare Texte eines Ordners; Unterordner (1-Segen, 2-Tauferinnerung) werden zu Abschnitten. */
+function klappAbschnitte(ordner, prefix) {
+  const gruppen = new Map();
+  for (const pfad of Object.keys(klappTexte).filter((p) => p.startsWith(ordner)).sort(nachName)) {
+    const teile = pfad.slice(ordner.length).split('/');
+    const gruppe = teile.length > 1 ? teile[0] : '';
+    if (!gruppen.has(gruppe)) gruppen.set(gruppe, []);
+    gruppen.get(gruppe).push(klappEintrag(pfad, prefix));
+  }
+  return [...gruppen.keys()].sort(nachName).map((g) => ({
+    titel: g.replace(/^\d+[\s._-]*/, '').replace(/[-_]+/g, ' ').trim(),
+    eintraege: gruppen.get(g),
+  }));
+}
 
-/** Anleitungen Segen und Tauferinnerung (für beide Kirchen gleich). */
-export const segenAnleitungen = () => klappListe('/content/segen/', 'anleitung-');
+/** Gedankenreisen einer Kirche (mit Foto und Aufnahme). */
+export const gedankenreisen = (kirche) => klappAbschnitte(`/content/gedankenreisen/${kirche}/`, 'reise-');
+
+/** Anleitungen Segen und Tauferinnerung (für beide Kirchen gleich), in Abschnitten. */
+export const segenAnleitungen = () => klappAbschnitte('/content/segen/', 'anleitung-');
 
 // ---------- Audio ----------
-const mp3s = import.meta.glob('/content/audio/**/*.mp3', {
+const mp3s = import.meta.glob(['/content/audio/**/*.mp3', '/content/gedankenreisen/**/*.mp3'], {
   eager: true,
   query: '?url',
   import: 'default',
 });
-const infos = import.meta.glob('/content/audio/**/*.txt', {
+const infos = import.meta.glob(['/content/audio/**/*.txt', '/content/gedankenreisen/**/*.txt'], {
   eager: true,
   query: '?raw',
   import: 'default',
@@ -129,18 +142,40 @@ function titelAusDateiname(datei) {
     .trim();
 }
 
-/** Alle Stücke für eine Kirche und einen Reiter, nach Dateiname sortiert. */
-export function audioListe(kirche, r) {
+function stueck(pfad) {
+  const datei = pfad.slice(pfad.lastIndexOf('/') + 1);
+  const info = infos[pfad.replace(/\.mp3$/i, '.txt')];
+  const zeilen = info ? String(info).replace(/^﻿/, '').split(/\r?\n/).map((z) => z.trim()) : [];
+  const titel = zeilen[0] || titelAusDateiname(datei);
+  // Zweite Zeile: wer singt oder spielt. Weitere Zeilen: Beschreibung.
+  const [mitwirkende = '', ...beschreibung] = zeilen.slice(1).filter(Boolean);
+  return { src: mp3s[pfad], titel, mitwirkende, beschreibung: beschreibung.join(' ') };
+}
+
+const nachName = (a, b) => a.localeCompare(b, 'de', { numeric: true });
+
+/**
+ * Stücke für eine Kirche und einen Reiter, in Abschnitten.
+ * Unterordner (z. B. 1-Advent, 2-Weihnachten) werden zu Abschnitten mit Überschrift;
+ * Dateien direkt im Ordner bilden einen Abschnitt ohne Überschrift.
+ */
+export function audioAbschnitte(kirche, r) {
   const ordner = `/content/audio/${kirche}/${r}/`;
-  return Object.keys(mp3s)
-    .filter((pfad) => pfad.startsWith(ordner) && !pfad.slice(ordner.length).includes('/'))
-    .sort((a, b) => a.localeCompare(b, 'de', { numeric: true }))
-    .map((pfad) => {
-      const datei = pfad.slice(ordner.length);
-      const info = infos[pfad.replace(/\.mp3$/i, '.txt')];
-      const zeilen = info ? String(info).replace(/^﻿/, '').split(/\r?\n/).map((z) => z.trim()) : [];
-      const titel = zeilen[0] || titelAusDateiname(datei);
-      const hinweis = zeilen.slice(1).filter(Boolean).join(' ');
-      return { src: mp3s[pfad], titel, hinweis };
-    });
+  const gruppen = new Map();
+  for (const pfad of Object.keys(mp3s).filter((p) => p.startsWith(ordner)).sort(nachName)) {
+    const teile = pfad.slice(ordner.length).split('/');
+    const gruppe = teile.length > 1 ? teile[0] : '';
+    if (!gruppen.has(gruppe)) gruppen.set(gruppe, []);
+    gruppen.get(gruppe).push(stueck(pfad));
+  }
+  return [...gruppen.keys()].sort(nachName).map((g) => ({
+    titel: g.replace(/^\d+[\s._-]*/, '').replace(/[-_]+/g, ' ').trim(),
+    stuecke: gruppen.get(g),
+  }));
+}
+
+/** Aufnahme mit gleichem Namen wie eine Textdatei (z. B. 01-engel.md + 01-engel.mp3), oder null. */
+export function aufnahmeZu(basis) {
+  const pfad = Object.keys(mp3s).find((p) => p.replace(/\.mp3$/i, '') === basis);
+  return pfad ? stueck(pfad) : null;
 }

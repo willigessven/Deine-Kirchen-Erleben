@@ -1,6 +1,6 @@
 ---
 titel: Segen spüren
-untertitel: Dein Segensmoment
+untertitel: Du bist gesegnet
 # Optional: Ein Segenswort aus der Gemeinde. Wird hervorgehoben angezeigt, wenn hier etwas steht.
 # Beispiel:  segenswort: "Hier steht das Segenswort."
 #            segenswort_quelle: "Wer es gesprochen oder geschrieben hat"

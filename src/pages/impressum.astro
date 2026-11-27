@@ -1,0 +1,49 @@
+---
+// Impressum der Website. Anbieterin ist die Gesamtkirchengemeinde (Angaben wie auf www.evangelisch-giessen-nord.de/kontakt),
+// verantwortlich für Projekt und Inhalt ist die Projektverantwortliche.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { url } from '../data/site.js';
+---
+<BaseLayout title="Impressum" description="Impressum der Website Deine Zeit – Kirche erleben.">
+  <h1>Impressum</h1>
+
+  <h2>Anbieterin</h2>
+  <p>
+    Evangelische Gesamtkirchengemeinde Gießen Nord<br />
+    vertreten durch den Kirchenvorstand, Vorsitzende Iris Hartings<br />
+    Kirchstraße 19, 35396 Gießen<br />
+    Telefon: <a href="tel:+496419502083">0641 / 9 50 20 83</a><br />
+    E-Mail: <a href="mailto:Gesamtkirchengemeinde.Giessen-Nord@ekhn.de">Gesamtkirchengemeinde.Giessen-Nord@ekhn.de</a>
+  </p>
+  <p>Die Gesamtkirchengemeinde gehört zur Evangelischen Kirche in Hessen und Nassau (EKHN).</p>
+
+  <h2>Projekt und Inhalt</h2>
+  <p>
+    „Deine Zeit – Kirche erleben“ ist ein Gemeindeprojekt von Joy Williges.
+  </p>
+  <p>
+    Verantwortlich für den Inhalt nach § 18 Abs. 2 Medienstaatsvertrag:<br />
+    Joy Williges, Projektverantwortliche<br />
+    Anschrift wie oben<br />
+    E-Mail: <a href="mailto:joy.williges@ekhn.de">joy.williges@ekhn.de</a>
+  </p>
+
+  <h2>Fotos, Texte und Aufnahmen</h2>
+  <p>
+    Fotos, Texte und Tonaufnahmen auf dieser Website stammen aus der Gemeinde. Bitte verwende sie nicht ohne
+    Erlaubnis weiter.
+  </p>
+
+  <h2>Links zu anderen Websites</h2>
+  <p>
+    Für die Inhalte verlinkter fremder Websites sind ausschließlich deren Betreiber verantwortlich.
+  </p>
+
+  <p>
+    Wie wir mit Daten umgehen, steht im <a href={url('/datenschutz/')}>Datenschutzhinweis</a>.
+    Das vollständige Impressum der Gemeinde findest du auf
+    <a href="https://www.evangelisch-giessen-nord.de/kontakt">evangelisch-giessen-nord.de</a>.
+  </p>
+
+  <p><a href={url('/')}>Zur Startseite</a></p>
+</BaseLayout>

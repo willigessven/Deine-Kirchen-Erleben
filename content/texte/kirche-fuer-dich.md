@@ -1,8 +1,6 @@
 ---
-titel: Kirche für dich
-untertitel: Eine kleine Gedankenreise
+titel: Gedankenreisen
+untertitel: Lasse den Raum und seine Bilder auf dich wirken. Hier beginnt eine Geschichte.
 ---
 
-Lass den Raum und seine Bilder auf dich wirken. Setze die Kopfhörer auf und lass dich auf eine kleine Gedankenreise durch diese Kirche mitnehmen.
-
-Schau dich um, du darfst dir Zeit lassen.
+Setze deine Kopfhörer auf und lass dich auf eine kleine Gedankenreise durch diese Kirche mitnehmen.
